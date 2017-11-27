@@ -26,6 +26,7 @@ class SplashScreenActivity : AppCompatActivity(),SplashScreenView{
 
     override fun navigateToNext() {
         var intent = Intent(this,InitializeTripActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent);
     }
 }

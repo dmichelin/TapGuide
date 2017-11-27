@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TapGuide</string>
     <string name="create_itinerary">Create My Day Plan</string>
+    <string name="testing_connection">Testing Connection</string>
 </resources>
