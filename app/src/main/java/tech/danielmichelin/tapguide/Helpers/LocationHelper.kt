@@ -10,6 +10,10 @@ import android.util.Log
  * Created by Daniel on 11/26/2017.
  */
 object LocationHelper{
+    /**
+     * Gets the best last known location of the phone in use
+     * @return the location of the user
+     */
     fun getLastBestLocation(context: Context): Location? {
         // get the location manager
         var lm : LocationManager =  context.getSystemService(Context.LOCATION_SERVICE) as LocationManager

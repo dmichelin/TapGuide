@@ -5,7 +5,7 @@ import com.yelp.fusion.client.connection.YelpFusionApi
 import com.yelp.fusion.client.connection.YelpFusionApiFactory
 
 /**
- * Created by Daniel on 11/26/2017.
+ * Created by Daniel on 11/26/2017. Provides access to the Yelp API
  */
 object YelpApiHelper{
     val clientId = "aQpdbu-Y1NYgJhnAJsLa0w"
