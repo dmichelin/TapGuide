@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode ="true"
+    tools:context="tech.danielmichelin.tapguide.InitializeTripScreen.InitializeTripActivity">
+
+    <TextView
+        android:id="@+id/TitleEt"
+        android:layout_width="190sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:text="@string/create_a_day_trip_around"
+        android:textAllCaps="true"
+        android:textColor="@color/bootstrap_brand_primary"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/distanceButtonGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/postalCodeEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/TitleEt"
+        app:layout_constraintStart_toStartOf="@+id/TitleEt"
+        app:layout_constraintTop_toBottomOf="@+id/TitleEt" />
+
+    <ImageView
+        android:id="@+id/citiesDrawable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:src="@drawable/cities"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Price"
+        app:layout_constraintBottom_toTopOf="@+id/priceButtonGroup"
+        app:layout_constraintEnd_toEndOf="@+id/priceButtonGroup"
+        app:layout_constraintStart_toStartOf="@+id/priceButtonGroup" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Distance"
+        app:layout_constraintBottom_toTopOf="@id/distanceButtonGroup"
+        app:layout_constraintEnd_toEndOf="@+id/distanceButtonGroup"
+        app:layout_constraintStart_toStartOf="@+id/distanceButtonGroup" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButtonGroup
+        android:id="@+id/priceButtonGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal"
+        app:buttonMode="radio"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:layout_constraintBottom_toTopOf="@+id/CreateItineraryButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:roundedCorners="true"
+        >
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$$" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$$$$" />
+    </com.beardedhen.androidbootstrap.BootstrapButtonGroup>
+
+    <com.beardedhen.androidbootstrap.BootstrapButtonGroup
+        android:id="@+id/distanceButtonGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal"
+        app:buttonMode="radio"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="lg"
+        app:layout_constraintBottom_toTopOf="@+id/priceTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:roundedCorners="true"
+        >
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Walking" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Biking" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Driving" />
+
+
+    </com.beardedhen.androidbootstrap.BootstrapButtonGroup>
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/CreateItineraryButton"
+        android:layout_width="match_parent"
+        app:bootstrapSize="lg"
+        app:showOutline="true"
+        android:layout_margin="@dimen/bootstrap_h3_hori_padding"
+        android:layout_height="wrap_content"
+        android:text="@string/create_itinerary"
+        app:layout_constraintBottom_toTopOf="@id/citiesDrawable"/>
+
+</android.support.constraint.ConstraintLayout>
