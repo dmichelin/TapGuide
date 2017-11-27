@@ -8,15 +8,16 @@
     android:focusableInTouchMode ="true"
     tools:context="tech.danielmichelin.tapguide.InitializeTripScreen.InitializeTripActivity">
 
-    <TextView
+    <com.beardedhen.androidbootstrap.AwesomeTextView
         android:id="@+id/TitleEt"
         android:layout_width="312dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        app:bootstrapBrand="primary"
         android:text="@string/create_a_day_trip_around"
         android:textAllCaps="true"
-        android:textSize="@dimen/bootstrap_h1_text_size"
+        android:textSize="40dp"
         app:layout_constraintBottom_toTopOf="@+id/postalCodeEt"
         app:layout_constraintEnd_toEndOf="@+id/distanceButtonGroup"
         app:layout_constraintStart_toStartOf="@+id/distanceButtonGroup"
@@ -26,15 +27,21 @@
         android:id="@+id/postalCodeEt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="@dimen/bootstrap_h1_text_size"
+        android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="@+id/distanceButtonGroup"
         app:layout_constraintStart_toStartOf="@+id/distanceButtonGroup"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/citiesDrawable"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:src="@drawable/cities"
+        app:layout_constraintBottom_toBottomOf="parent" />
     <TextView
         android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
@@ -143,6 +150,6 @@
         android:layout_margin="@dimen/bootstrap_h3_hori_padding"
         android:layout_height="wrap_content"
         android:text="@string/create_itinerary"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/citiesDrawable"/>
 
 </android.support.constraint.ConstraintLayout>
