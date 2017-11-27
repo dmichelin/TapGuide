@@ -49,7 +49,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:roundedCorners="true"
-        app:
         app:showOutline="true">
 
         <com.beardedhen.androidbootstrap.BootstrapButton
