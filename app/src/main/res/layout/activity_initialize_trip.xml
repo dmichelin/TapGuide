@@ -4,8 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode ="true"
     tools:context="tech.danielmichelin.tapguide.InitializeTripScreen.InitializeTripActivity">
 
+    <TextView
+        android:id="@+id/TitleEt"
+        android:layout_width="312dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/create_a_day_trip_around"
+        android:textAllCaps="true"
+        android:textSize="@dimen/bootstrap_h1_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/postalCodeEt"
+        app:layout_constraintEnd_toEndOf="@+id/distanceButtonGroup"
+        app:layout_constraintStart_toStartOf="@+id/distanceButtonGroup"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/postalCodeEt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/bootstrap_h1_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/distanceButtonGroup"
+        app:layout_constraintStart_toStartOf="@+id/distanceButtonGroup"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
@@ -17,21 +46,20 @@
         app:layout_constraintBottom_toTopOf="@+id/priceButtonGroup"
         app:layout_constraintEnd_toEndOf="@+id/priceButtonGroup"
         app:layout_constraintStart_toStartOf="@+id/priceButtonGroup" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </LinearLayout>
+
+
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
         android:text="Distance"
+        app:layout_constraintBottom_toTopOf="@id/distanceButtonGroup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/distanceButtonGroup"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.beardedhen.androidbootstrap.BootstrapButtonGroup
         android:id="@+id/priceButtonGroup"
