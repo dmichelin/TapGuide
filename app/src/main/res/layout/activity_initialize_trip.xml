@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode ="true"
-    tools:context="tech.danielmichelin.tapguide.InitializeTripScreen.InitializeTripActivity">
+    tools:context=".Screens.InitializeTripScreen.InitializeTripActivity">
 
     <TextView
         android:id="@+id/TitleEt"

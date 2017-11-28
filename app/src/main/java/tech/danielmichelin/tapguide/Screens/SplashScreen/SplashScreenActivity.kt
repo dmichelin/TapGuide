@@ -1,18 +1,14 @@
-package tech.danielmichelin.tapguide.SplashScreen
+package tech.danielmichelin.tapguide.Screens.SplashScreen
 
-import android.Manifest
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import tech.danielmichelin.tapguide.Helpers.LocationHelper
-import tech.danielmichelin.tapguide.InitializeTripScreen.InitializeTripActivity
+import tech.danielmichelin.tapguide.Screens.InitializeTripScreen.InitializeTripActivity
 import tech.danielmichelin.tapguide.R
 import java.util.*
-import android.Manifest.permission
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.Manifest.permission.READ_CONTACTS
 import tech.danielmichelin.tapguide.Helpers.PermissionHelper
 
 

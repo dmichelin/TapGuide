@@ -1,4 +1,4 @@
-package tech.danielmichelin.tapguide.SplashScreen
+package tech.danielmichelin.tapguide.Screens.SplashScreen
 
 import android.os.AsyncTask
 import android.util.Log

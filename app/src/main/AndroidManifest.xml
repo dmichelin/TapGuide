@@ -13,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".InitializeTripScreen.InitializeTripActivity">
+        <activity android:name="tech.danielmichelin.tapguide.Screens.InitializeTripScreen.InitializeTripActivity">
         </activity>
-        <activity android:name=".SplashScreen.SplashScreenActivity"
+        <activity android:name="tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity">
+        </activity>
+        <activity android:name="tech.danielmichelin.tapguide.Screens.SplashScreen.SplashScreenActivity"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
