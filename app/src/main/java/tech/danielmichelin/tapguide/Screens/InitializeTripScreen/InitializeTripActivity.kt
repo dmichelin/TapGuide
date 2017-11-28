@@ -19,9 +19,11 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
     lateinit var tripViewPresenter: InitializeTripPresenter
     lateinit var distanceRadio: BootstrapButtonGroup
     lateinit var priceRadio: BootstrapButtonGroup
+    lateinit var loadingDialog: BuildingTripDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadingDialog = BuildingTripDialog()
         tripViewPresenter = InitializeTripPresenterImpl(this)
         setContentView(R.layout.activity_initialize_trip)
 
@@ -41,10 +43,15 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
     }
 
     override fun showBuildingTripDialog() {
-        BuildingTripDialog().show(fragmentManager,"BuildingTripDialog")
+        loadingDialog.retainInstance = true
+        loadingDialog.show(fragmentManager,"BuildingTripDialog")
     }
 
-    override fun navigateToNextScreen(businesses: ArrayList<Business>) {
+    override fun navigateToNextScreen(businesses: MutableList<Business>) {
+
+        loadingDialog.dismiss()
+
+
         val bundle = Bundle()
         val mapper = ObjectMapper()
         val stringList = ArrayList<String>()

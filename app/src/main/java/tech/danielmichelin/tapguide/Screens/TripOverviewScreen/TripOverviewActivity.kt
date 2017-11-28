@@ -9,13 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.ListView
+import android.widget.TextView
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.squareup.picasso.Picasso
 import com.willowtreeapps.spruce.Spruce
 import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort
 import com.yelp.fusion.client.models.Business
-import kotlinx.android.synthetic.main.activity_trip_overview.view.*
 import tech.danielmichelin.tapguide.R
 
 
@@ -24,6 +26,7 @@ import tech.danielmichelin.tapguide.R
  */
 class TripOverviewActivity: AppCompatActivity(){
     lateinit var listView: ListView
+    var loaded = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(View.inflate(this, R.layout.activity_trip_overview,null))
@@ -35,24 +38,34 @@ class TripOverviewActivity: AppCompatActivity(){
             businessList.add(mapper.readValue(business,Business::class.java))
         }
         listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
-        listView.adapter = ArrayAdapter<Business>(this,android.R.layout.simple_list_item_1,businessList as List<Business>)
+        listView.adapter = BusinessAdapter(this,businessList.toTypedArray())
     }
     fun initSpruce(){
-        Spruce.SpruceBuilder(listView).sortWith(DefaultSort(50L))
-                .animateWith(DefaultAnimations.fadeInAnimator(listView,800),
-                        ObjectAnimator.ofFloat(listView, "translationX", -listView.getWidth().toFloat(), 0f).setDuration(800))
-                .start()
+        // make sure to only do this once
+        if(!loaded){
+            Spruce.SpruceBuilder(listView).sortWith(DefaultSort(50L))
+                    .animateWith(DefaultAnimations.fadeInAnimator(listView,800),
+                            ObjectAnimator.ofFloat(listView, "translationX", -listView.getWidth().toFloat(), 0f).setDuration(800))
+                    .start()
+            loaded = true
+        }
+
     }
 
     inner class BusinessAdapter(context: Context, val businesses: Array<Business>): ArrayAdapter<Business>(context,R.layout.business_list_item,businesses){
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
             val business = getItem(position)
             var v = convertView
             if(convertView==null){
-                v = layoutInflater.inflate(R.layout.business_list_item,parent)
+                v = layoutInflater.inflate(R.layout.business_list_item,parent,false)
             }
+            var image = v?.findViewById<ImageView>(R.id.businessImage)
 
-            TODO("Implement viewadapter")
+            if(!business.imageUrl.equals(""))
+                Picasso.with(context).load(business.imageUrl).resize(300,300).centerCrop().into(image)
+            var name = v?.findViewById<TextView>(R.id.businessName)
+            name?.text = business.name
+
             return v
         }
     }

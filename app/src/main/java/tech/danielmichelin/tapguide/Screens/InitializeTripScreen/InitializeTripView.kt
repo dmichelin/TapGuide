@@ -7,5 +7,5 @@ import com.yelp.fusion.client.models.Business
  */
 interface InitializeTripView{
     fun showBuildingTripDialog()
-    fun navigateToNextScreen(businesses: ArrayList<Business>)
+    fun navigateToNextScreen(businesses: MutableList<Business>)
 }
