@@ -17,12 +17,27 @@
 
     <TextView
         android:id="@+id/businessName"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="placeholder"
+        android:text="Error"
         app:layout_constraintStart_toEndOf="@+id/businessImage"
         app:layout_constraintTop_toTopOf="@+id/businessImage" />
+
+    <TextView
+        android:id="@+id/categories"
+        android:layout_width="wrap_content"
+        android:maxWidth="150dp"
+        android:maxHeight="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Errror"
+        app:layout_constraintBottom_toBottomOf="@+id/businessImage"
+        app:layout_constraintStart_toEndOf="@+id/businessImage"
+        />
 
 </android.support.constraint.ConstraintLayout>

@@ -59,12 +59,16 @@ class TripOverviewActivity: AppCompatActivity(){
             if(convertView==null){
                 v = layoutInflater.inflate(R.layout.business_list_item,parent,false)
             }
-            var image = v?.findViewById<ImageView>(R.id.businessImage)
+            val image = v?.findViewById<ImageView>(R.id.businessImage)
 
             if(!business.imageUrl.equals(""))
                 Picasso.with(context).load(business.imageUrl).resize(300,300).centerCrop().into(image)
-            var name = v?.findViewById<TextView>(R.id.businessName)
+            val name = v?.findViewById<TextView>(R.id.businessName)
             name?.text = business.name
+            val categories = v?.findViewById<TextView>(R.id.categories)
+            var str = ""
+            business.categories.forEach{cat -> str+=cat.title + ", "}
+            categories?.text = str.substringBeforeLast(",")
 
             return v
         }

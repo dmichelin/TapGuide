@@ -35,6 +35,8 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             // get the highest rated businesses
             response.businesses.sortBy { business -> business.rating }
             // Todo: Do more shit with this algorithm
+
+            // TODO: This causes a crash when there are less than five items
             return response.businesses.subList(0,5)
         }
 
