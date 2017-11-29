@@ -1,6 +1,7 @@
 package tech.danielmichelin.tapguide.Screens.InitializeTripScreen
 
 import android.os.AsyncTask
+import android.util.SparseArray
 import com.yelp.fusion.client.connection.YelpFusionApiFactory
 import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Enums.Distances
@@ -21,12 +22,12 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
 
     }
 
-    inner class buildItineraryTask : AsyncTask<MutableMap<String, String>, Int, MutableList<Business>>(){
+    inner class buildItineraryTask : AsyncTask<MutableMap<String, String>, Int, HashMap<Int,Business>>(){
         override fun onPreExecute() {
             super.onPreExecute()
             tripView.showBuildingTripDialog()
         }
-        override fun doInBackground(vararg params: MutableMap<String, String>): MutableList<Business> {
+        override fun doInBackground(vararg params: MutableMap<String, String>): HashMap<Int,Business> {
             var factory = YelpFusionApiFactory()
             val api = factory.createAPI(YelpApiHelper.clientId, YelpApiHelper.clientSecret)
             params[0]["term"]="breakfast"
@@ -44,33 +45,38 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             activities.businesses.sortByDescending{business -> (business.rating-3)*business.reviewCount}
             nightlife.businesses.sortByDescending{business -> (business.rating-3)*business.reviewCount}
 
-            val newList = ArrayList<Business>()
+            val newList = HashMap<Int,Business>()
             // add breakfast
-            if(breakfast.businesses.size>0)newList.add(breakfast.businesses.first({business ->!containsName(newList,business)}))
+            if(breakfast.businesses.size>0)newList.put(0,breakfast.businesses.first({business ->!containsName(newList,business)}))
             // add morning activity
-            if(activities.businesses.size>0)newList.add(activities.businesses.first({business ->!containsName(newList,business)}))
+            if(activities.businesses.size>0)newList.put(1,activities.businesses.first({business ->!containsName(newList,business)}))
             // add lunch
-            if(food.businesses.size>0)newList.add(food.businesses.first({business ->!containsName(newList,business)}))
+            if(food.businesses.size>0)newList.put(2,food.businesses.first({business ->!containsName(newList,business)}))
             // add afternoon activity
-            if(activities.businesses.size>1)newList.add(activities.businesses.first({business ->!containsName(newList,business)}))
+            if(activities.businesses.size>1)newList.put(3,activities.businesses.first({business ->!containsName(newList,business)}))
             // add second afternoon activity
-            if(activities.businesses.size>2)newList.add(activities.businesses.first({business ->!containsName(newList,business)}))
+            if(activities.businesses.size>2)newList.put(4,activities.businesses.first({business ->!containsName(newList,business)}))
             // add dinner
-            if(food.businesses.size>1)newList.add(food.businesses.first({business ->!containsName(newList,business)}))
+            if(food.businesses.size>1)newList.put(5,food.businesses.first({business ->!containsName(newList,business)}))
             // add night activity
-            if(nightlife.businesses.size>1)newList.add(nightlife.businesses.first({business ->!containsName(newList,business)}))
+            if(nightlife.businesses.size>1)newList.put(6,nightlife.businesses.first({business ->!containsName(newList,business)}))
 
             return newList
         }
 
-        override fun onPostExecute(result: MutableList<Business>) {
+        override fun onPostExecute(result: HashMap<Int,Business>) {
             super.onPostExecute(result)
             tripView.navigateToNextScreen(result)
         }
 
-        private fun containsName(list: MutableList<Business>,business: Business): Boolean{
+        private fun containsName(list: Map<Int,Business>,business: Business): Boolean{
             var notUnique = false;
-            list.forEach({b -> if(b.name.equals(business.name)) notUnique= true})
+            for(i in 0..list.keys.size){
+                if(list[i]?.id.equals(business.id)){
+                    notUnique= true
+                    business.categories= null
+                }
+            }
             return notUnique;
         }
     }
