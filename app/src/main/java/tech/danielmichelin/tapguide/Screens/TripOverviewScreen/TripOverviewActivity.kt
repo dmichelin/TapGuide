@@ -68,6 +68,8 @@ class TripOverviewActivity: AppCompatActivity(){
             val name = v?.findViewById<TextView>(R.id.businessName)
             name?.text = business.name
 
+            val eventType = v?.findViewById<TextView>(R.id.description)
+
             v?.setOnClickListener({
                 val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
                 val intent = Intent(Intent.ACTION_VIEW)
