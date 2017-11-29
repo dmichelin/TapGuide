@@ -17,6 +17,7 @@ import com.willowtreeapps.spruce.Spruce
 import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort
 import com.yelp.fusion.client.models.Business
+import tech.danielmichelin.tapguide.Model.TGBusiness
 import tech.danielmichelin.tapguide.R
 import java.net.URI
 import java.net.URL
@@ -33,10 +34,10 @@ class TripOverviewActivity: AppCompatActivity(){
         setContentView(View.inflate(this, R.layout.activity_trip_overview,null))
         listView = findViewById<ListView>(R.id.activity_list)
         val businesses = intent.extras.get("businesses") as List<String>
-        val businessList = ArrayList<Business>()
+        val businessList = ArrayList<TGBusiness>()
         val mapper = ObjectMapper()
         for(business in businesses){
-            businessList.add(mapper.readValue(business,Business::class.java))
+            businessList.add(mapper.readValue(business,TGBusiness::class.java))
         }
         listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
         listView.adapter = BusinessAdapter(this,businessList.toTypedArray())
@@ -54,7 +55,7 @@ class TripOverviewActivity: AppCompatActivity(){
 
     }
 
-    inner class BusinessAdapter(context: Context, val businesses: Array<Business>): ArrayAdapter<Business>(context,R.layout.business_list_item,businesses){
+    inner class BusinessAdapter(context: Context, val businesses: Array<TGBusiness>): ArrayAdapter<TGBusiness>(context,R.layout.business_list_item,businesses){
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
             val business = getItem(position)
             var v = convertView
@@ -69,6 +70,7 @@ class TripOverviewActivity: AppCompatActivity(){
             name?.text = business.name
 
             val eventType = v?.findViewById<TextView>(R.id.description)
+            eventType?.text = business.eventType
 
             v?.setOnClickListener({
                 val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
