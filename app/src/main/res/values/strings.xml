@@ -4,4 +4,8 @@
     <string name="testing_connection">Testing Connection</string>
     <string name="create_a_day_trip_around">Create a Day Trip Around</string>
     <string name="building_your_trip">Building Your Trip</string>
+    <string name="breakfast">breafast</string>
+    <string name="lunch">lunch</string>
+    <string name="dinner">dinner</string>
+    <string name="activity">activity</string>
 </resources>

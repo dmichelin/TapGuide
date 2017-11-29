@@ -53,6 +53,8 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             if(food.businesses.size>0)newList.add(food.businesses.first({business ->!containsName(newList,business)}))
             // add afternoon activity
             if(activities.businesses.size>1)newList.add(activities.businesses.first({business ->!containsName(newList,business)}))
+            // add second afternoon activity
+            if(activities.businesses.size>2)newList.add(activities.businesses.first({business ->!containsName(newList,business)}))
             // add dinner
             if(food.businesses.size>1)newList.add(food.businesses.first({business ->!containsName(newList,business)}))
             // add night activity

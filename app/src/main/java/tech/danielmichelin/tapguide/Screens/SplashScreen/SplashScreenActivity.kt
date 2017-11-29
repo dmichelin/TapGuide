@@ -39,12 +39,16 @@ class SplashScreenActivity : AppCompatActivity(),SplashScreenView{
         // get the user's current location
         val loc = LocationHelper.getLastBestLocation(this)
         val geoCoder = Geocoder(this, Locale.getDefault())
-        var locList = geoCoder.getFromLocation(loc!!.latitude,loc.longitude,1)
-
-        // then navigate to the next activity
-        var intent = Intent(this,InitializeTripActivity::class.java)
-        intent.putExtra("ZIP",locList.get(0).postalCode)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent);
+        var intent = Intent(this, InitializeTripActivity::class.java)
+        if(loc != null) {
+            var locList = geoCoder.getFromLocation(loc!!.latitude, loc.longitude, 1)
+            intent.putExtra("ZIP", locList.get(0).postalCode)
+        }
+        else{
+            intent.putExtra("ZIP", "0000")
+        }
+            // then navigate to the next activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent);
     }
 }
