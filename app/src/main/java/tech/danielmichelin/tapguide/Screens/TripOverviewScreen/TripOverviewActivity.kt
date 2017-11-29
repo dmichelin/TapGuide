@@ -5,22 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squareup.picasso.Picasso
 import com.willowtreeapps.spruce.Spruce
 import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort
-import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Model.TGBusiness
 import tech.danielmichelin.tapguide.R
-import java.net.URI
-import java.net.URL
 
 
 /**
@@ -37,7 +32,7 @@ class TripOverviewActivity: AppCompatActivity(){
         val businessList = ArrayList<TGBusiness>()
         val mapper = ObjectMapper()
         for(business in businesses){
-            businessList.add(mapper.readValue(business,TGBusiness::class.java))
+            businessList.add(mapper.readValue(business, TGBusiness::class.java))
         }
         listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
         listView.adapter = BusinessAdapter(this,businessList.toTypedArray())
