@@ -67,10 +67,7 @@ class TripOverviewActivity: AppCompatActivity(){
                 Picasso.with(context).load(business.imageUrl).resize(300,300).centerCrop().into(image)
             val name = v?.findViewById<TextView>(R.id.businessName)
             name?.text = business.name
-            val categories = v?.findViewById<TextView>(R.id.categories)
-            var str = ""
-            business.categories.forEach{cat -> str+=cat.title + ", "}
-            categories?.text = str.substringBeforeLast(",")
+
             v?.setOnClickListener({
                 val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
                 val intent = Intent(Intent.ACTION_VIEW)
