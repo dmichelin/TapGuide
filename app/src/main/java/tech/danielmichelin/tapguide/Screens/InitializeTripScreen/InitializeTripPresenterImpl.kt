@@ -57,9 +57,7 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             if(food.businesses.size>1)newList.add(food.businesses.first({business ->!containsName(newList,business)}))
             // add night activity
             if(nightlife.businesses.size>1)newList.add(nightlife.businesses.first({business ->!containsName(newList,business)}))
-            // Todo: Do more shit with this algorithm
 
-            // TODO: This causes a crash when there are less than five items
             return newList
         }
 
