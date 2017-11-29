@@ -2,16 +2,15 @@ package tech.danielmichelin.tapguide.Screens.TripOverviewScreen
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.squareup.picasso.Picasso
 import com.willowtreeapps.spruce.Spruce
@@ -19,6 +18,8 @@ import com.willowtreeapps.spruce.animation.DefaultAnimations
 import com.willowtreeapps.spruce.sort.DefaultSort
 import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.R
+import java.net.URI
+import java.net.URL
 
 
 /**
@@ -48,6 +49,7 @@ class TripOverviewActivity: AppCompatActivity(){
                             ObjectAnimator.ofFloat(listView, "translationX", -listView.getWidth().toFloat(), 0f).setDuration(800))
                     .start()
             loaded = true
+            Toast.makeText(this,"Tap a destination to navigate there",Toast.LENGTH_LONG).show()
         }
 
     }
@@ -69,8 +71,18 @@ class TripOverviewActivity: AppCompatActivity(){
             var str = ""
             business.categories.forEach{cat -> str+=cat.title + ", "}
             categories?.text = str.substringBeforeLast(",")
+            v?.setOnClickListener({
+                val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(uri)
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            })
 
             return v
         }
+
+
     }
 }

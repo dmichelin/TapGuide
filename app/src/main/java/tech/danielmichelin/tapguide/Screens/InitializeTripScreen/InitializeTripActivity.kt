@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.widget.EditText
+import android.widget.Toast
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapButtonGroup
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -38,6 +39,8 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
         val buildTripButton = findViewById<BootstrapButton>(R.id.CreateItineraryButton)
         buildTripButton.setOnClickListener {if(distanceRadio.getSelected() != -1 && priceRadio.getSelected() != -1){
                 tripViewPresenter.makeTripBuildRequest(Distances.values()[distanceRadio.getSelected()],PriceLevels.values()[priceRadio.getSelected()],zipCodeEt.text.toString())
+            }else{
+                Toast.makeText(this,"Please select a price level and distance",Toast.LENGTH_LONG).show()
             }
         }
     }
