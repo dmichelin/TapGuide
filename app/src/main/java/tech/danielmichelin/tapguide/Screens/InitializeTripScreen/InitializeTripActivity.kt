@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.util.SparseArray
 import android.widget.EditText
 import android.widget.Toast
 import com.beardedhen.androidbootstrap.BootstrapButton
@@ -50,20 +51,13 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
         loadingDialog.show(fragmentManager,"BuildingTripDialog")
     }
 
-    override fun navigateToNextScreen(businesses: MutableList<Business>) {
+    override fun navigateToNextScreen(businesses: HashMap<Int,Business>) {
 
         loadingDialog.dismiss()
 
 
-        val bundle = Bundle()
-        val mapper = ObjectMapper()
-        val stringList = ArrayList<String>()
-        for(business in businesses){
-            stringList.add(mapper.writeValueAsString(business))
-        }
-        bundle.putSerializable("businesses",stringList)
         val intent = Intent(this,TripOverviewActivity::class.java)
-        intent.putExtras(bundle)
+        intent.putExtra("businesses",businesses)
         startActivity(intent)
     }
 
