@@ -30,7 +30,7 @@ import android.util.Log
 /**
  * Created by Daniel on 11/27/2017.
  */
-class TripOverviewActivity: AppCompatActivity(), GestureDetector.OnGestureListener{
+class TripOverviewActivity: AppCompatActivity() {
     lateinit var listView: ListView
     var loaded = false
     lateinit var businessToType : MutableList<TGBusiness>
@@ -65,96 +65,71 @@ class TripOverviewActivity: AppCompatActivity(), GestureDetector.OnGestureListen
 
     }
 
-    inner class BusinessAdapter(context: Context, val businesses: Array<TGBusiness>): ArrayAdapter<TGBusiness>(context,R.layout.business_list_item,businesses){
+    inner class BusinessAdapter(context: Context, val businesses: Array<TGBusiness>): ArrayAdapter<TGBusiness>(context,R.layout.business_list_item,businesses) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
             val business = getItem(position)
             var v = convertView
-            if(convertView==null){
-                v = layoutInflater.inflate(R.layout.business_list_item,parent,false)
+            if (convertView == null) {
+                v = layoutInflater.inflate(R.layout.business_list_item, parent, false)
             }
             val image = v?.findViewById<ImageView>(R.id.businessImage)
 
 
-            v?.setOnTouchListener(View.OnTouchListener(
-                fun (v : View, event: MotionEvent): Boolean {
-                    Log.d(DEBUG_TAG, "here test 2")
-                    //stuff I'm not sure about stuff here
-                    GestureDetectorCompat(v.context,  MyGestureListener())
-                    if(gestureDetector!!.onTouchEvent(event)){
-                        val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.setData(uri)
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
-                        }
-                        return true;
-                    }
-                    return true;
-                }))
-            if(!business.imageUrl.equals(""))
-                Picasso.with(context).load(business.imageUrl).resize(300,300).centerCrop().into(image)
+
+            if (!business.imageUrl.equals(""))
+                Picasso.with(context).load(business.imageUrl).resize(300, 300).centerCrop().into(image)
             val name = v?.findViewById<TextView>(R.id.businessName)
             name?.text = business.name
             val activityType = v?.findViewById<TextView>(R.id.description)
-            activityType?.text= business.eventType
+            activityType?.text = business.eventType
 
-//            v?.setOnClickListener({
-//
-//            })
 
             return v
         }
 
-        internal inner class MyGestureListener : GestureDetector.SimpleOnGestureListener() {
+    }
 
-            override fun onDown(event: MotionEvent): Boolean {
-                Log.d(DEBUG_TAG, "onDown: " + event.toString())
-                return true
-            }
+    /**
+     * Detects left and right swipes across a view.
+     */
+    inner class OnSwipeTouchListener(context: Context) : View.OnTouchListener {
 
-            override fun onFling(event1: MotionEvent, event2: MotionEvent,
-                                 velocityX: Float, velocityY: Float): Boolean {
-                Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString())
-                return true
-            }
+        private val gestureDetector: GestureDetector
+
+        init {
+            gestureDetector = GestureDetector(context, GestureListener())
         }
-    }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        this.gestureDetector?.onTouchEvent(event)
-        Log.d(DEBUG_TAG, "Touch event")
-        // Be sure to call the superclass implementation
-        return super.onTouchEvent(event)
-    }
+        fun onSwipeLeft() {}
 
-    override fun onDown(event: MotionEvent): Boolean {
-        Log.d(DEBUG_TAG, "onDown: " + event.toString())
-        return true
-    }
+        fun onSwipeRight() {}
 
-    override fun onFling(event1: MotionEvent, event2: MotionEvent,
-                         velocityX: Float, velocityY: Float): Boolean {
-        Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString())
-        return true
-    }
+        override fun onTouch(v: View, event: MotionEvent): Boolean {
+            return gestureDetector.onTouchEvent(event)
+        }
 
-    override fun onLongPress(event: MotionEvent) {
-        Log.d(DEBUG_TAG, "onLongPress: " + event.toString())
-    }
+        private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
+            private val SWIPE_DISTANCE_THRESHOLD = 100
+            private val SWIPE_VELOCITY_THRESHOLD = 100
 
-    override fun onScroll(event1: MotionEvent, event2: MotionEvent, distanceX: Float,
-                          distanceY: Float): Boolean {
-        Log.d(DEBUG_TAG, "onScroll: " + event1.toString() + event2.toString())
-        return true
-    }
+            override fun onDown(e: MotionEvent): Boolean {
+                return true
+            }
 
-    override fun onShowPress(event: MotionEvent) {
-        Log.d(DEBUG_TAG, "onShowPress: " + event.toString())
-    }
+            override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                val distanceX = e2.x - e1.x
+                val distanceY = e2.y - e1.y
+                if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (distanceX > 0)
+                        onSwipeRight()
+                    else
+                        onSwipeLeft()
+                    return true
+                }
+                return false
+            }
 
-    override fun onSingleTapUp(event: MotionEvent): Boolean {
-        Log.d(DEBUG_TAG, "onSingleTapUp: " + event.toString())
-        return true
+        }
     }
 }
