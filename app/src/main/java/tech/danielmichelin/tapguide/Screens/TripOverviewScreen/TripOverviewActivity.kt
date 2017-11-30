@@ -30,7 +30,7 @@ import android.util.Log
 /**
  * Created by Daniel on 11/27/2017.
  */
-class TripOverviewActivity: AppCompatActivity(), GestureDetector.OnGestureListener{
+class TripOverviewActivity: AppCompatActivity(){
     lateinit var listView: ListView
     var loaded = false
     lateinit var businessToType : MutableList<TGBusiness>
@@ -65,96 +65,29 @@ class TripOverviewActivity: AppCompatActivity(), GestureDetector.OnGestureListen
 
     }
 
-    inner class BusinessAdapter(context: Context, val businesses: Array<TGBusiness>): ArrayAdapter<TGBusiness>(context,R.layout.business_list_item,businesses){
+    inner class BusinessAdapter(context: Context, val businesses: Array<TGBusiness>): ArrayAdapter<TGBusiness>(context,R.layout.business_list_item,businesses) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
             val business = getItem(position)
             var v = convertView
-            if(convertView==null){
-                v = layoutInflater.inflate(R.layout.business_list_item,parent,false)
+            if (convertView == null) {
+                v = layoutInflater.inflate(R.layout.business_list_item, parent, false)
             }
             val image = v?.findViewById<ImageView>(R.id.businessImage)
-
-
-            v?.setOnTouchListener(View.OnTouchListener(
-                fun (v : View, event: MotionEvent): Boolean {
-                    Log.d(DEBUG_TAG, "here test 2")
-                    //stuff I'm not sure about stuff here
-                    GestureDetectorCompat(v.context,  MyGestureListener())
-                    if(gestureDetector!!.onTouchEvent(event)){
-                        val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.setData(uri)
-                        if (intent.resolveActivity(getPackageManager()) != null) {
-                            startActivity(intent);
-                        }
-                        return true;
-                    }
-                    return true;
-                }))
-            if(!business.imageUrl.equals(""))
-                Picasso.with(context).load(business.imageUrl).resize(300,300).centerCrop().into(image)
+            val uri = Uri.parse("geo:?q=" + (business.location.address1 + " " + business.location.zipCode).replace(" ", "%20"))
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(uri)
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+            if (!business.imageUrl.equals(""))
+                Picasso.with(context).load(business.imageUrl).resize(300, 300).centerCrop().into(image)
             val name = v?.findViewById<TextView>(R.id.businessName)
             name?.text = business.name
             val activityType = v?.findViewById<TextView>(R.id.description)
-            activityType?.text= business.eventType
-
-//            v?.setOnClickListener({
-//
-//            })
+            activityType?.text = business.eventType
 
             return v
         }
-
-        internal inner class MyGestureListener : GestureDetector.SimpleOnGestureListener() {
-
-            override fun onDown(event: MotionEvent): Boolean {
-                Log.d(DEBUG_TAG, "onDown: " + event.toString())
-                return true
-            }
-
-            override fun onFling(event1: MotionEvent, event2: MotionEvent,
-                                 velocityX: Float, velocityY: Float): Boolean {
-                Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString())
-                return true
-            }
-        }
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        this.gestureDetector?.onTouchEvent(event)
-        Log.d(DEBUG_TAG, "Touch event")
-        // Be sure to call the superclass implementation
-        return super.onTouchEvent(event)
-    }
-
-    override fun onDown(event: MotionEvent): Boolean {
-        Log.d(DEBUG_TAG, "onDown: " + event.toString())
-        return true
-    }
-
-    override fun onFling(event1: MotionEvent, event2: MotionEvent,
-                         velocityX: Float, velocityY: Float): Boolean {
-        Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString())
-        return true
-    }
-
-    override fun onLongPress(event: MotionEvent) {
-        Log.d(DEBUG_TAG, "onLongPress: " + event.toString())
-    }
-
-    override fun onScroll(event1: MotionEvent, event2: MotionEvent, distanceX: Float,
-                          distanceY: Float): Boolean {
-        Log.d(DEBUG_TAG, "onScroll: " + event1.toString() + event2.toString())
-        return true
-    }
-
-    override fun onShowPress(event: MotionEvent) {
-        Log.d(DEBUG_TAG, "onShowPress: " + event.toString())
-    }
-
-    override fun onSingleTapUp(event: MotionEvent): Boolean {
-        Log.d(DEBUG_TAG, "onSingleTapUp: " + event.toString())
-        return true
     }
 }
