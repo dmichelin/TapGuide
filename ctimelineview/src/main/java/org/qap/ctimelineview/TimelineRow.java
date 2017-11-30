@@ -2,6 +2,7 @@ package org.qap.ctimelineview;
 
 
 import android.graphics.Bitmap;
+import android.view.View;
 
 import java.util.Date;
 
@@ -13,6 +14,16 @@ public class TimelineRow {
     private String title = null;
     private String description = null;
     private String image = null;
+    private View.OnClickListener onClickListener = null;
+
+    public View.OnClickListener getOnClickListener() {
+        return onClickListener;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     private int bellowLineColor = 0;
     private int bellowLineSize = 6;
     private int imageSize = 50;

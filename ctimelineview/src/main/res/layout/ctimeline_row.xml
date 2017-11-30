@@ -74,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textSize="30sp"
             android:text="Title"
             android:layout_below="@id/crowDate"
             android:textStyle="bold"
@@ -86,6 +87,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSearchResultSubtitle"
             android:text="Description"
+            android:textSize="20sp"
             android:layout_below="@id/crowTitle"
             android:layout_centerVertical="true"
             />

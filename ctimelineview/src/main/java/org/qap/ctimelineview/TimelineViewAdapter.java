@@ -4,7 +4,11 @@ package org.qap.ctimelineview;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,7 +56,7 @@ public class TimelineViewAdapter extends ArrayAdapter<TimelineRow> {
         TextView rowDate = (TextView) view.findViewById(R.id.crowDate);
         TextView rowTitle = (TextView) view.findViewById(R.id.crowTitle);
         TextView rowDescription = (TextView) view.findViewById(R.id.crowDesc);
-        ImageView rowImage = (ImageView) view.findViewById(R.id.crowImg);
+        final ImageView rowImage = (ImageView) view.findViewById(R.id.crowImg);
         View rowUpperLine = (View) view.findViewById(R.id.crowUpperLine);
         View rowLowerLine = (View) view.findViewById(R.id.crowLowerLine);
 
@@ -105,7 +110,21 @@ public class TimelineViewAdapter extends ArrayAdapter<TimelineRow> {
 
 
         if (row.getImage() != null&&!row.getImage().equals("")) {
-            Picasso.with(context).load(row.getImage()).resize(300, 300).centerCrop().into(rowImage);
+            // https://stackoverflow.com/a/37756752/7970936
+            Picasso.with(context).load(row.getImage()).resize(300, 300).centerCrop().into(rowImage, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap imageBitmap = ((BitmapDrawable) rowImage.getDrawable()).getBitmap();
+                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getContext().getResources(), imageBitmap);
+                    imageDrawable.setCircular(true);
+                    imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+                    rowImage.setImageDrawable(imageDrawable);
+                }
+                @Override
+                public void onError() {
+                    rowImage.setImageResource(android.R.drawable.star_big_on);
+                }
+            });
         }
 
         int pixels = (int) (row.getImageSize() * scale + 0.5f);
@@ -134,7 +153,7 @@ public class TimelineViewAdapter extends ArrayAdapter<TimelineRow> {
         ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) rowImage.getLayoutParams();
         marginParams.setMargins(0, (int) (pixels / 2) * -1, 0, (pixels / 2) * -1);
 
-
+        view.setOnClickListener(row.getOnClickListener());
         return view;
     }
 

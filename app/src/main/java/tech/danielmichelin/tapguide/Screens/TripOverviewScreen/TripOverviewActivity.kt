@@ -1,8 +1,11 @@
 package tech.danielmichelin.tapguide.Screens.TripOverviewScreen
 
+import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -39,19 +42,26 @@ class TripOverviewActivity: AppCompatActivity() {
         for(i in 0..businesses.size-1){
             val business = businesses.get(i)
             val row = TimelineRow(i)
-            row.setImageSize(40);
-            row.setBelowLineColor(Color.argb(255, 0, 0, 0));
+            row.setImageSize(150);
+            row.setBelowLineColor(Color.argb(255, 10, 100, 255));
 // To set row Below Line Size in dp (optional)
-            row.setBelowLineSize(6);
-
+            row.setBelowLineSize(20);
+            row.setOnClickListener {
+                val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(uri)
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } }
             row.title= business.eventType
             row.description = business.name
             row.image = business.imageUrl
 
             timelineRowsList.add(row)
         }
+        listView.isVerticalScrollBarEnabled= false
 
-        //listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
+        listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
 
         listView.adapter = TimelineViewAdapter(this,0,timelineRowsList,false)
         Log.d("Test", "Test")
@@ -64,10 +74,19 @@ class TripOverviewActivity: AppCompatActivity() {
     fun initSpruce(){
         // make sure to only do this once
         if(!loaded){
-            Spruce.SpruceBuilder(listView).sortWith(DefaultSort(50L))
-                    .animateWith(DefaultAnimations.fadeInAnimator(listView,800),
-                            ObjectAnimator.ofFloat(listView, "translationX", -listView.getWidth().toFloat(), 0f).setDuration(800))
-                    .start()
+            val animator = ObjectAnimator.ofFloat(listView, "translationX", -listView.width.toFloat(), 0f).setDuration(800)
+            animator.addListener(object : Animator.AnimatorListener{
+                override fun onAnimationStart(animation: Animator) {
+                }
+                override fun onAnimationEnd(animation: Animator) {
+                    listView.isVerticalScrollBarEnabled = true
+                }
+                override fun onAnimationCancel(animation: Animator) {
+                }
+                override fun onAnimationRepeat(animation: Animator) {
+                }
+            })
+            animator.start()
             loaded = true
             Toast.makeText(this,"Tap a destination to navigate there",Toast.LENGTH_LONG).show()
         }
