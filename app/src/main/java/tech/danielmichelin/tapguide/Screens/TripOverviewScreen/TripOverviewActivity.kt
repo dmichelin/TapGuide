@@ -84,7 +84,12 @@ class TripOverviewActivity: AppCompatActivity() {
             val activityType = v?.findViewById<TextView>(R.id.description)
             activityType?.text = business.eventType
 
-
+            // check this shit out
+            v?.setOnTouchListener(object: OnSwipeTouchListener(context) {
+                override fun onSwipeLeft() {
+                    Toast.makeText(context,"YOU SWIPED LEFT",Toast.LENGTH_LONG).show()
+                }
+            });
             return v
         }
 
@@ -92,8 +97,10 @@ class TripOverviewActivity: AppCompatActivity() {
 
     /**
      * Detects left and right swipes across a view.
+     *
+     * https://stackoverflow.com/questions/4139288/android-how-to-handle-right-to-left-swipe-gestures
      */
-    inner class OnSwipeTouchListener(context: Context) : View.OnTouchListener {
+    open inner class OnSwipeTouchListener(context: Context) : View.OnTouchListener {
 
         private val gestureDetector: GestureDetector
 
@@ -101,9 +108,9 @@ class TripOverviewActivity: AppCompatActivity() {
             gestureDetector = GestureDetector(context, GestureListener())
         }
 
-        fun onSwipeLeft() {}
+        open fun onSwipeLeft() {}
 
-        fun onSwipeRight() {}
+        open fun onSwipeRight() {}
 
         override fun onTouch(v: View, event: MotionEvent): Boolean {
             return gestureDetector.onTouchEvent(event)
