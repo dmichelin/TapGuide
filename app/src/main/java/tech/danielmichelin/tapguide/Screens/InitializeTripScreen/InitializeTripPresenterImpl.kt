@@ -7,6 +7,7 @@ import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Enums.Distances
 import tech.danielmichelin.tapguide.Enums.PriceLevels
 import tech.danielmichelin.tapguide.Helpers.YelpApiHelper
+import tech.danielmichelin.tapguide.Model.TGBusiness
 
 /**
  * Created by Daniel on 11/27/2017.
@@ -22,12 +23,12 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
 
     }
 
-    inner class buildItineraryTask : AsyncTask<MutableMap<String, String>, Int, HashMap<Int,Business>>(){
+    inner class buildItineraryTask : AsyncTask<MutableMap<String, String>, Int, MutableList<TGBusiness>>(){
         override fun onPreExecute() {
             super.onPreExecute()
             tripView.showBuildingTripDialog()
         }
-        override fun doInBackground(vararg params: MutableMap<String, String>): HashMap<Int,Business> {
+        override fun doInBackground(vararg params: MutableMap<String, String>): MutableList<TGBusiness> {
             var factory = YelpFusionApiFactory()
             val api = factory.createAPI(YelpApiHelper.clientId, YelpApiHelper.clientSecret)
             params[0]["term"]="breakfast"
@@ -45,39 +46,57 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             activities.businesses.sortByDescending{business -> (business.rating-3)*business.reviewCount}
             nightlife.businesses.sortByDescending{business -> (business.rating-3)*business.reviewCount}
 
-            val newList = HashMap<Int,Business>()
+            val newList = mutableListOf<TGBusiness>()
+            val businessList = mutableListOf<Business>()
             // add breakfast
-            if(breakfast.businesses.size>0)newList.put(0,breakfast.businesses.first({business ->!containsName(newList,business)}))
+            if(breakfast.businesses.size>0){
+                val item = TGBusiness(breakfast.businesses.first(), "Breakfast")
+                breakfast.businesses.removeAt(0);
+                newList.add(item)
+            }
             // add morning activity
-            if(activities.businesses.size>0)newList.put(1,activities.businesses.first({business ->!containsName(newList,business)}))
+            if(activities.businesses.size>0){
+                val item = TGBusiness(activities.businesses.first(),"Activity")
+                activities.businesses.removeAt(0)
+                newList.add(item)
+            }
             // add lunch
-            if(food.businesses.size>0)newList.put(2,food.businesses.first({business ->!containsName(newList,business)}))
+            if(food.businesses.size>0){
+                val item = TGBusiness(food.businesses.first(), "Lunch")
+                food.businesses.removeAt(0)
+                newList.add(item)
+            }
             // add afternoon activity
-            if(activities.businesses.size>1)newList.put(3,activities.businesses.first({business ->!containsName(newList,business)}))
+            if(activities.businesses.size>0){
+                val item = TGBusiness(activities.businesses.first(), "Activity")
+                activities.businesses.removeAt(0)
+                newList.add(item)
+            }
             // add second afternoon activity
-            if(activities.businesses.size>2)newList.put(4,activities.businesses.first({business ->!containsName(newList,business)}))
+            if(activities.businesses.size>0){
+                val item = TGBusiness(activities.businesses.first(), "Activity")
+                activities.businesses.removeAt(0)
+                newList.add(item)
+            }
             // add dinner
-            if(food.businesses.size>1)newList.put(5,food.businesses.first({business ->!containsName(newList,business)}))
+            if(food.businesses.size>0){
+                val item = TGBusiness(food.businesses.first(), "Dinner")
+                food.businesses.removeAt(0)
+                newList.add(item)
+            }
             // add night activity
-            if(nightlife.businesses.size>1)newList.put(6,nightlife.businesses.first({business ->!containsName(newList,business)}))
+            if(nightlife.businesses.size>0){
+                val item = TGBusiness(nightlife.businesses.first(), "Nightlife")
+                nightlife.businesses.removeAt(0)
+                newList.add(item)
+            }
 
             return newList
         }
 
-        override fun onPostExecute(result: HashMap<Int,Business>) {
+        override fun onPostExecute(result: MutableList<TGBusiness>) {
             super.onPostExecute(result)
             tripView.navigateToNextScreen(result)
-        }
-
-        private fun containsName(list: Map<Int,Business>,business: Business): Boolean{
-            var notUnique = false;
-            for(i in 0..list.keys.size){
-                if(list[i]?.id.equals(business.id)){
-                    notUnique= true
-                    business.categories= null
-                }
-            }
-            return notUnique;
         }
     }
 

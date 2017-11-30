@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Enums.Distances
 import tech.danielmichelin.tapguide.Enums.PriceLevels
+import tech.danielmichelin.tapguide.Model.TGBusiness
 import tech.danielmichelin.tapguide.R
 import tech.danielmichelin.tapguide.Screens.Dialogs.BuildingTripDialog
 import tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity
@@ -51,13 +52,13 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
         loadingDialog.show(fragmentManager,"BuildingTripDialog")
     }
 
-    override fun navigateToNextScreen(businesses: HashMap<Int,Business>) {
+    override fun navigateToNextScreen(businesses: MutableList<TGBusiness>) {
 
         loadingDialog.dismiss()
 
 
         val intent = Intent(this,TripOverviewActivity::class.java)
-        intent.putExtra("businesses",businesses)
+        intent.putExtra("businesses",businesses.toTypedArray())
         startActivity(intent)
     }
 
