@@ -33,9 +33,6 @@ import android.util.Log
 class TripOverviewActivity: AppCompatActivity() {
     lateinit var listView: ListView
     var loaded = false
-    lateinit var businessToType : MutableList<TGBusiness>
-    val DEBUG_TAG = "Gestures"
-    var gestureDetector: GestureDetectorCompat? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
