@@ -92,27 +92,4 @@ class TripOverviewActivity: AppCompatActivity() {
         }
 
     }
-
-    inner class BusinessAdapter(context: Context, val businesses: Array<TGBusiness>): ArrayAdapter<TGBusiness>(context,R.layout.business_list_item,businesses) {
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            val business = getItem(position)
-            var v = convertView
-            if (convertView == null) {
-                v = layoutInflater.inflate(R.layout.business_list_item, parent, false)
-            }
-            val image = v?.findViewById<ImageView>(R.id.businessImage)
-
-
-
-
-            val name = v?.findViewById<TextView>(R.id.businessName)
-            name?.text = business.name
-            val activityType = v?.findViewById<TextView>(R.id.description)
-            activityType?.text = business.eventType
-
-            return v
-        }
-
-    }
 }
