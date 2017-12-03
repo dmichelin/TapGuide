@@ -41,4 +41,11 @@ public class TGBusiness extends Business {
         this.eventType = eventType;
     }
     String eventType;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Business) {
+            return this.getId().equals(((Business) obj).getId());
+        } else return false;
+    }
 }
