@@ -1,7 +1,6 @@
 package tech.danielmichelin.tapguide.Screens.InitializeTripScreen
 
 import android.os.AsyncTask
-import android.util.SparseArray
 import com.yelp.fusion.client.connection.YelpFusionApiFactory
 import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Enums.Distances
@@ -13,13 +12,15 @@ import tech.danielmichelin.tapguide.Model.TGBusiness
  * Created by Daniel on 11/27/2017.
  */
 class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeTripPresenter{
+    var tripRequest: buildItineraryTask? = null
     override fun makeTripBuildRequest(distance: Distances, priceLevel: PriceLevels, location: String){
         val params : MutableMap<String,String> = HashMap()
         params["location"] = location
         params["price"] = priceLevel.price
         params["radius"] = distance.meters.toString()
 
-        buildItineraryTask().execute(params)
+        tripRequest = buildItineraryTask()
+        tripRequest?.execute(params)
 
     }
 
@@ -50,46 +51,44 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             val businessList = mutableListOf<Business>()
             // add breakfast
             if(breakfast.businesses.size>0){
-                val item = TGBusiness(breakfast.businesses.first(), "Breakfast")
-                breakfast.businesses.removeAt(0);
+                val item = TGBusiness(breakfast.businesses.first({ business -> !containsName(newList, business) }), "Breakfast")
                 newList.add(item)
             }
             // add morning activity
             if(activities.businesses.size>0){
-                val item = TGBusiness(activities.businesses.first(),"Activity")
-                activities.businesses.removeAt(0)
+                val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                 newList.add(item)
             }
             // add lunch
             if(food.businesses.size>0){
-                val item = TGBusiness(food.businesses.first(), "Lunch")
-                food.businesses.removeAt(0)
+                val item = TGBusiness(food.businesses.first({ business -> !containsName(newList, business) }), "Lunch")
                 newList.add(item)
             }
             // add afternoon activity
             if(activities.businesses.size>0){
-                val item = TGBusiness(activities.businesses.first(), "Activity")
-                activities.businesses.removeAt(0)
+                val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                 newList.add(item)
             }
             // add second afternoon activity
             if(activities.businesses.size>0){
-                val item = TGBusiness(activities.businesses.first(), "Activity")
-                activities.businesses.removeAt(0)
+                val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                 newList.add(item)
             }
             // add dinner
             if(food.businesses.size>0){
-                val item = TGBusiness(food.businesses.first(), "Dinner")
-                food.businesses.removeAt(0)
+                val item = TGBusiness(food.businesses.first({ business -> !containsName(newList, business) }), "Dinner")
                 newList.add(item)
             }
             // add night activity
             if(nightlife.businesses.size>0){
-                val item = TGBusiness(nightlife.businesses.first(), "Nightlife")
-                nightlife.businesses.removeAt(0)
+                val item = TGBusiness(nightlife.businesses.first({ business -> !containsName(newList, business) }), "Nightlife")
                 newList.add(item)
             }
+
+            breakfast.businesses.removeAll(newList)
+            nightlife.businesses.removeAll(newList)
+            food.businesses.removeAll(newList)
+            activities.businesses.removeAll(newList)
 
             return newList
         }
@@ -100,4 +99,13 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
         }
     }
 
+    override fun cancelTripBuildRequest() {
+        tripRequest?.cancel(true)
+    }
+
+    private fun containsName(list: MutableList<TGBusiness>, business: Business): Boolean {
+        var notUnique = false;
+        list.forEach({ b -> if (b.name.equals(business.name)) notUnique = true })
+        return notUnique;
+    }
 }

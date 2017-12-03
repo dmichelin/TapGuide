@@ -2,43 +2,43 @@ package tech.danielmichelin.tapguide.Screens.TripOverviewScreen
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
-import com.squareup.picasso.Picasso
-import com.willowtreeapps.spruce.Spruce
-import com.willowtreeapps.spruce.animation.DefaultAnimations
-import com.willowtreeapps.spruce.sort.DefaultSort
-import tech.danielmichelin.tapguide.R
-import tech.danielmichelin.tapguide.Model.TGBusiness
 import android.util.Log
+import android.view.View
+import android.widget.ListView
+import android.widget.Toast
+import com.github.clans.fab.FloatingActionButton
 import org.qap.ctimelineview.TimelineRow
 import org.qap.ctimelineview.TimelineViewAdapter
+import tech.danielmichelin.tapguide.Helpers.LocationHelper
+import tech.danielmichelin.tapguide.Model.TGBusiness
+import tech.danielmichelin.tapguide.R
 
 
 /**
  * Created by Daniel on 11/27/2017.
  */
-class TripOverviewActivity: AppCompatActivity() {
+class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
     lateinit var listView: ListView
+    lateinit var tripOverviewPresenter: TripOverviewPresenter
+    // currently only starts a multi part-navigation
+    lateinit var tripOptionsFab: FloatingActionButton
     var loaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(View.inflate(this, R.layout.activity_trip_overview,null))
-        listView = findViewById<ListView>(R.id.activity_list)
-
-        val businesses = intent.extras.get("businesses") as Array<TGBusiness>
+        // set up the presenter
+        tripOverviewPresenter = TripOverviewPresenterImpl(this)
 
         // implement timelineview
+        listView = findViewById<ListView>(R.id.activity_list)
+        val businesses = intent.extras.get("businesses") as Array<TGBusiness>
         val timelineRowsList = ArrayList<TimelineRow>()
-
         for(i in 0..businesses.size-1){
             val business = businesses.get(i)
             val row = TimelineRow(i)
@@ -60,15 +60,15 @@ class TripOverviewActivity: AppCompatActivity() {
             timelineRowsList.add(row)
         }
         listView.isVerticalScrollBarEnabled= false
-
         listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
-
         listView.adapter = TimelineViewAdapter(this,0,timelineRowsList,false)
         Log.d("Test", "Test")
 
-        // Instantiate the gesture detector with the
-        // application context and an implementation of
-        // GestureDetector.OnGestureListener
+        // set the onclick adapter for the floating action button
+        tripOptionsFab = findViewById(R.id.fab)
+        tripOptionsFab.setOnClickListener {
+            startIntentFromUri(tripOverviewPresenter.generateLocationUri(getLastLocationPair(), businesses.asList()))
+        }
 
     }
     fun initSpruce(){
@@ -90,6 +90,18 @@ class TripOverviewActivity: AppCompatActivity() {
             loaded = true
             Toast.makeText(this,"Tap a destination to navigate there",Toast.LENGTH_LONG).show()
         }
+    }
 
+    private fun getLastLocationPair(): Pair<Float?, Float?> {
+        val loc = LocationHelper.getLastBestLocation(this)
+        return Pair(loc?.latitude?.toFloat(), loc?.longitude?.toFloat())
+    }
+
+    private fun startIntentFromUri(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setData(uri)
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
