@@ -50,37 +50,37 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             val newList = mutableListOf<TGBusiness>()
             val businessList = mutableListOf<Business>()
             // add breakfast
-            if(breakfast.businesses.size>0){
+            if (breakfast.businesses.size > 0 && containsAll(newList, breakfast.businesses)) {
                 val item = TGBusiness(breakfast.businesses.first({ business -> !containsName(newList, business) }), "Breakfast")
                 newList.add(item)
             }
             // add morning activity
-            if(activities.businesses.size>0){
+            if (activities.businesses.size > 0 && containsAll(newList, activities.businesses)) {
                 val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                 newList.add(item)
             }
             // add lunch
-            if(food.businesses.size>0){
+            if (food.businesses.size > 0 && containsAll(newList, food.businesses)) {
                 val item = TGBusiness(food.businesses.first({ business -> !containsName(newList, business) }), "Lunch")
                 newList.add(item)
             }
             // add afternoon activity
-            if(activities.businesses.size>0){
+            if (activities.businesses.size > 0 && containsAll(newList, activities.businesses)) {
                 val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                 newList.add(item)
             }
             // add second afternoon activity
-            if(activities.businesses.size>0){
+            if (activities.businesses.size > 0 && containsAll(newList, activities.businesses)) {
                 val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                 newList.add(item)
             }
             // add dinner
-            if(food.businesses.size>0){
+            if (food.businesses.size > 0 && containsAll(newList, food.businesses)) {
                 val item = TGBusiness(food.businesses.first({ business -> !containsName(newList, business) }), "Dinner")
                 newList.add(item)
             }
             // add night activity
-            if(nightlife.businesses.size>0){
+            if (nightlife.businesses.size > 0 && containsAll(newList, nightlife.businesses)) {
                 val item = TGBusiness(nightlife.businesses.first({ business -> !containsName(newList, business) }), "Nightlife")
                 newList.add(item)
             }
@@ -108,4 +108,18 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
         list.forEach({ b -> if (b.name.equals(business.name)) notUnique = true })
         return notUnique;
     }
+
+    /**
+     * Needed to mediate between TGBusiness and business
+     */
+    private fun containsAll(tgList: List<TGBusiness>, bList: List<Business>): Boolean {
+        var containsAll = true;
+        tgList.forEach { tgBusiness ->
+            if (bList.indexOfFirst { business -> tgBusiness.id.equals(business.id) } == -1) {
+                containsAll = false;
+            }
+        }
+        return containsAll
+    }
+
 }
