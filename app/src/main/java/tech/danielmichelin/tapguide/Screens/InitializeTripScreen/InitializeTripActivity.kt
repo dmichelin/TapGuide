@@ -2,6 +2,7 @@ package tech.danielmichelin.tapguide.Screens.InitializeTripScreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.widget.EditText
@@ -48,6 +49,11 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         loadingDialog.listener = this
         loadingDialog.retainInstance = true
         loadingDialog.show(fragmentManager,"BuildingTripDialog")
+    }
+
+    override fun showErrorDialog(errorText: String?) {
+        loadingDialog.dismiss()
+        AlertDialog.Builder(this).setMessage(errorText).show()
     }
 
     override fun navigateToNextScreen(businesses: MutableList<TGBusiness>) {

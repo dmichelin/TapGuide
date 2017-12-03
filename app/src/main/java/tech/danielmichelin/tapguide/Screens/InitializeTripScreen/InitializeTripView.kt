@@ -1,7 +1,5 @@
 package tech.danielmichelin.tapguide.Screens.InitializeTripScreen
 
-import android.util.SparseArray
-import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Model.TGBusiness
 
 /**
@@ -9,5 +7,6 @@ import tech.danielmichelin.tapguide.Model.TGBusiness
  */
 interface InitializeTripView{
     fun showBuildingTripDialog()
+    fun showErrorDialog(errorText: String?)
     fun navigateToNextScreen(businesses: MutableList<TGBusiness>)
 }
