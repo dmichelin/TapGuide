@@ -8,4 +8,5 @@ import tech.danielmichelin.tapguide.Enums.PriceLevels
  */
 interface InitializeTripPresenter{
     fun makeTripBuildRequest(distance: Distances, priceLevel: PriceLevels, location: String)
+    fun cancelTripBuildRequest()
 }

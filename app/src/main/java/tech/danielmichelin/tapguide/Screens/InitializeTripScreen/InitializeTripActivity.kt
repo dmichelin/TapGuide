@@ -1,22 +1,21 @@
 package tech.danielmichelin.tapguide.Screens.InitializeTripScreen
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.widget.EditText
 import android.widget.Toast
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapButtonGroup
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.yelp.fusion.client.models.Business
 import tech.danielmichelin.tapguide.Enums.Distances
 import tech.danielmichelin.tapguide.Enums.PriceLevels
+import tech.danielmichelin.tapguide.Model.TGBusiness
 import tech.danielmichelin.tapguide.R
 import tech.danielmichelin.tapguide.Screens.Dialogs.BuildingTripDialog
 import tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity
 
-class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
+class InitializeTripActivity : AppCompatActivity(), InitializeTripView, BuildingTripDialog.BuildingTripDialogCancelListener {
     lateinit var tripViewPresenter: InitializeTripPresenter
     lateinit var distanceRadio: BootstrapButtonGroup
     lateinit var priceRadio: BootstrapButtonGroup
@@ -46,25 +45,20 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView {
     }
 
     override fun showBuildingTripDialog() {
+        loadingDialog.listener = this
         loadingDialog.retainInstance = true
         loadingDialog.show(fragmentManager,"BuildingTripDialog")
     }
 
-    override fun navigateToNextScreen(businesses: MutableList<Business>) {
-
+    override fun navigateToNextScreen(businesses: MutableList<TGBusiness>) {
         loadingDialog.dismiss()
-
-
-        val bundle = Bundle()
-        val mapper = ObjectMapper()
-        val stringList = ArrayList<String>()
-        for(business in businesses){
-            stringList.add(mapper.writeValueAsString(business))
-        }
-        bundle.putSerializable("businesses",stringList)
         val intent = Intent(this,TripOverviewActivity::class.java)
-        intent.putExtras(bundle)
+        intent.putExtra("businesses",businesses.toTypedArray())
         startActivity(intent)
+    }
+
+    override fun onDialogCancel() {
+        tripViewPresenter.cancelTripBuildRequest()
     }
 
     /**
