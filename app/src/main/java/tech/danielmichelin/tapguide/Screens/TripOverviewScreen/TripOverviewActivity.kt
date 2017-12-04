@@ -50,7 +50,7 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
 
         // TODO: Edit this so that duplicate trips cannot be saved
-        saveTripButton.setOnClickListener { saveTrip((Paper.book(tripBook).allKeys.size + 1).toString(), businesses.asList()) }
+        saveTripButton.setOnClickListener { saveTrip(intent.extras.getString("tripName", "New Trip"), businesses.asList()) }
 
         //saveTrip("1",businesses.asList())
         //getTrip("1")

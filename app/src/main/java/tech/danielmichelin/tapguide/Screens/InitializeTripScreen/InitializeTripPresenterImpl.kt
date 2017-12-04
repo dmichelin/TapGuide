@@ -27,11 +27,13 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
 
     inner class buildItineraryTask(var error: Boolean = false) : AsyncTask<MutableMap<String, String>, Int, MutableList<TGBusiness>>() {
         var errorMsg: String? = "The error was.... no error?"
+        var tripName: String? = null
         override fun onPreExecute() {
             super.onPreExecute()
             tripView.showBuildingTripDialog()
         }
         override fun doInBackground(vararg params: MutableMap<String, String>): MutableList<TGBusiness> {
+            tripName = params[0]["location"]
             var factory = YelpFusionApiFactory()
             val newList = mutableListOf<TGBusiness>()
             try {
@@ -103,7 +105,7 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
         override fun onPostExecute(result: MutableList<TGBusiness>) {
             super.onPostExecute(result)
 
-            if (!error) tripView.navigateToNextScreen(result)
+            if (!error) tripView.navigateToTripOverviewScreen(result, tripName)
             else tripView.showErrorDialog(errorMsg)
         }
     }

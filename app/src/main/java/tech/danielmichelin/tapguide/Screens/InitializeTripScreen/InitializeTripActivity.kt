@@ -24,6 +24,7 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
     lateinit var distanceRadio: BootstrapButtonGroup
     lateinit var priceRadio: BootstrapButtonGroup
     lateinit var loadingDialog: BuildingTripDialog
+    lateinit var openSavedTripsBtn: BootstrapButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Paper.init(this)
@@ -50,16 +51,19 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         }
 
         // build the onclick listener for the saved trips button
-        val btn = findViewById<BootstrapButton>(R.id.load_trip_btn)
-        if (Paper.book(TripOverviewActivity.tripBook).allKeys.size > 0) {
-            btn.visibility = View.VISIBLE
-        }
-        btn.setOnClickListener({
+        openSavedTripsBtn = findViewById<BootstrapButton>(R.id.load_trip_btn)
+        openSavedTripsBtn.setOnClickListener({
             val intent = Intent(this, ChooseSavedTripScreenActivity::class.java)
             startActivity(intent)
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Paper.book(TripOverviewActivity.tripBook).allKeys.size > 0) {
+            openSavedTripsBtn.visibility = View.VISIBLE
+        }
+    }
 
     override fun showBuildingTripDialog() {
         loadingDialog.listener = this
@@ -72,10 +76,11 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         AlertDialog.Builder(this).setMessage(errorText).show()
     }
 
-    override fun navigateToNextScreen(businesses: MutableList<TGBusiness>) {
+    override fun navigateToTripOverviewScreen(businesses: MutableList<TGBusiness>, tripName: String?) {
         loadingDialog.dismiss()
         val intent = Intent(this,TripOverviewActivity::class.java)
         intent.putExtra("businesses",businesses.toTypedArray())
+        intent.putExtra("tripName", tripName)
         startActivity(intent)
     }
 
