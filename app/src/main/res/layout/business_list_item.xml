@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,18 +15,19 @@
 
     <TextView
         android:id="@+id/businessName"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/bootstrap_h5_text_size"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:text="Error"
         app:layout_constraintBottom_toBottomOf="@+id/businessImage"
-        app:layout_constraintStart_toEndOf="@+id/businessImage" />
+        app:layout_constraintStart_toEndOf="@+id/businessImage"
+        app:layout_constraintEnd_toEndOf="@id/description" />
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="@dimen/bootstrap_h4_text_size"

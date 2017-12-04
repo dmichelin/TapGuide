@@ -57,7 +57,21 @@
         app:layout_constraintEnd_toEndOf="@+id/priceButtonGroup"
         app:layout_constraintStart_toStartOf="@+id/priceButtonGroup" />
 
-
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/load_trip_btn"
+        app:bootstrapSize="lg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Load A Trip Instead"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postalCodeEt" />
 
     <TextView
         android:id="@+id/textView"

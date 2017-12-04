@@ -53,37 +53,37 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
 
                 val businessList = mutableListOf<Business>()
                 // add breakfast
-                if (breakfast.businesses.size > 0 && containsAll(newList, breakfast.businesses)) {
+                if (breakfast.businesses.size > 0 && !containsAll(newList, breakfast.businesses)) {
                     val item = TGBusiness(breakfast.businesses.first({ business -> !containsName(newList, business) }), "Breakfast")
                     newList.add(item)
                 }
                 // add morning activity
-                if (activities.businesses.size > 0 && containsAll(newList, activities.businesses)) {
+                if (activities.businesses.size > 0 && !containsAll(newList, activities.businesses)) {
                     val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                     newList.add(item)
                 }
                 // add lunch
-                if (food.businesses.size > 0 && containsAll(newList, food.businesses)) {
+                if (food.businesses.size > 0 && !containsAll(newList, food.businesses)) {
                     val item = TGBusiness(food.businesses.first({ business -> !containsName(newList, business) }), "Lunch")
                     newList.add(item)
                 }
                 // add afternoon activity
-                if (activities.businesses.size > 0 && containsAll(newList, activities.businesses)) {
+                if (activities.businesses.size > 0 && !containsAll(newList, activities.businesses)) {
                     val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                     newList.add(item)
                 }
                 // add second afternoon activity
-                if (activities.businesses.size > 0 && containsAll(newList, activities.businesses)) {
+                if (activities.businesses.size > 0 && !containsAll(newList, activities.businesses)) {
                     val item = TGBusiness(activities.businesses.first({ business -> !containsName(newList, business) }), "Activity")
                     newList.add(item)
                 }
                 // add dinner
-                if (food.businesses.size > 0 && containsAll(newList, food.businesses)) {
+                if (food.businesses.size > 0 && !containsAll(newList, food.businesses)) {
                     val item = TGBusiness(food.businesses.first({ business -> !containsName(newList, business) }), "Dinner")
                     newList.add(item)
                 }
                 // add night activity
-                if (nightlife.businesses.size > 0 && containsAll(newList, nightlife.businesses)) {
+                if (nightlife.businesses.size > 0 && !containsAll(newList, nightlife.businesses)) {
                     val item = TGBusiness(nightlife.businesses.first({ business -> !containsName(newList, business) }), "Nightlife")
                     newList.add(item)
                 }
@@ -92,6 +92,7 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
                 nightlife.businesses.removeAll(newList)
                 food.businesses.removeAll(newList)
                 activities.businesses.removeAll(newList)
+
             } catch (err: UnexpectedAPIError) {
                 error = true
                 errorMsg = err.description
@@ -122,12 +123,19 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
      */
     private fun containsAll(tgList: List<TGBusiness>, bList: List<Business>): Boolean {
         var containsAll = true;
-        tgList.forEach { tgBusiness ->
-            if (bList.indexOfFirst { business -> tgBusiness.id.equals(business.id) } == -1) {
-                containsAll = false;
+        for (business in bList) {
+            var found = false
+            for (tgBusiness in tgList) {
+                if (tgBusiness.equals(business)) {
+                    found = true
+                    break
+                } else {
+                    found = false
+                }
             }
+            containsAll = found
         }
-        return containsAll
+        return containsAll && tgList.size > 0
     }
 
 }

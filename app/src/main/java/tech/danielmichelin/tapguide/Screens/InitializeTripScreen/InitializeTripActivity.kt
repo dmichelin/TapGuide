@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapButtonGroup
+import io.paperdb.Paper
 import tech.danielmichelin.tapguide.Enums.Distances
 import tech.danielmichelin.tapguide.Enums.PriceLevels
 import tech.danielmichelin.tapguide.Model.TGBusiness
 import tech.danielmichelin.tapguide.R
+import tech.danielmichelin.tapguide.Screens.ChooseSavedTripScreen.ChooseSavedTripScreenActivity
 import tech.danielmichelin.tapguide.Screens.Dialogs.BuildingTripDialog
 import tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity
 
@@ -23,6 +26,7 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
     lateinit var loadingDialog: BuildingTripDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Paper.init(this)
         super.onCreate(savedInstanceState)
         loadingDialog = BuildingTripDialog()
         tripViewPresenter = InitializeTripPresenterImpl(this)
@@ -35,7 +39,8 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         // get the two radio buttons
         distanceRadio= findViewById(R.id.distanceButtonGroup)
         priceRadio = findViewById(R.id.priceButtonGroup)
-        // arm the onclick listener
+
+        // arm the onclick listener to build the trip
         val buildTripButton = findViewById<BootstrapButton>(R.id.CreateItineraryButton)
         buildTripButton.setOnClickListener {if(distanceRadio.getSelected() != -1 && priceRadio.getSelected() != -1){
                 tripViewPresenter.makeTripBuildRequest(Distances.values()[distanceRadio.getSelected()],PriceLevels.values()[priceRadio.getSelected()],zipCodeEt.text.toString())
@@ -43,7 +48,18 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
                 Toast.makeText(this,"Please select a price level and distance",Toast.LENGTH_LONG).show()
             }
         }
+
+        // build the onclick listener for the saved trips button
+        val btn = findViewById<BootstrapButton>(R.id.load_trip_btn)
+        if (Paper.book(TripOverviewActivity.tripBook).allKeys.size > 0) {
+            btn.visibility = View.VISIBLE
+        }
+        btn.setOnClickListener({
+            val intent = Intent(this, ChooseSavedTripScreenActivity::class.java)
+            startActivity(intent)
+        })
     }
+
 
     override fun showBuildingTripDialog() {
         loadingDialog.listener = this

@@ -11,7 +11,10 @@ import android.util.Log
 import android.view.View
 import android.widget.ListView
 import android.widget.Toast
+import com.beardedhen.androidbootstrap.BootstrapButton
 import com.github.clans.fab.FloatingActionButton
+import io.paperdb.Paper
+import kotlinx.android.synthetic.main.activity_trip_overview.*
 import org.qap.ctimelineview.TimelineRow
 import org.qap.ctimelineview.TimelineViewAdapter
 import tech.danielmichelin.tapguide.Helpers.LocationHelper
@@ -31,6 +34,10 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // initialize our database
+        Paper.init(this);
+
+
         setContentView(View.inflate(this, R.layout.activity_trip_overview,null))
         // set up the presenter
         tripOverviewPresenter = TripOverviewPresenterImpl(this)
@@ -38,6 +45,15 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         // implement timelineview
         listView = findViewById<ListView>(R.id.activity_list)
         val businesses = intent.extras.get("businesses") as Array<TGBusiness>
+
+        // set the trip saved button
+        val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
+
+        // TODO: Edit this so that duplicate trips cannot be saved
+        saveTripButton.setOnClickListener { saveTrip((Paper.book(tripBook).allKeys.size + 1).toString(), businesses.asList()) }
+
+        //saveTrip("1",businesses.asList())
+        //getTrip("1")
         val timelineRowsList = ArrayList<TimelineRow>()
         for(i in 0..businesses.size-1){
             val business = businesses.get(i)
@@ -103,5 +119,17 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    companion object {
+        val tripBook = "SAVED_TRIPS"
+    }
+
+    private fun saveTrip(tripName: String, businesses: List<TGBusiness>) {
+        Paper.book(tripBook).write(tripName, businesses)
+    }
+
+    private fun getTrip(tripName: String): List<TGBusiness> {
+        return Paper.book(tripBook).read(tripName, ArrayList())
     }
 }
