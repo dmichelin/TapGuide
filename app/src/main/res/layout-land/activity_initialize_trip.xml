@@ -34,6 +34,20 @@
         app:layout_constraintStart_toStartOf="@+id/TitleEt"
         app:layout_constraintTop_toBottomOf="@+id/TitleEt" />
 
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/load_trip_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Load A Trip Instead"
+        android:visibility="invisible"
+        app:bootstrapSize="lg"
+        app:layout_constraintBottom_toTopOf="@+id/CreateItineraryButton"
+        app:layout_constraintEnd_toEndOf="@+id/TitleEt"
+        app:layout_constraintStart_toStartOf="@+id/TitleEt" />
+
     <ImageView
         android:id="@+id/citiesDrawable"
         android:layout_width="match_parent"
