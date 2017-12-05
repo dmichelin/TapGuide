@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Delete"
+        android:text="@string/delete"
         app:bootstrapBrand="danger"
         app:bootstrapSize="lg"
         app:layout_constraintBottom_toBottomOf="@+id/trip_image_imageview"

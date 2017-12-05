@@ -49,7 +49,6 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         // set the trip saved button
         val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
 
-        // TODO: Edit this so that duplicate trips cannot be saved
         saveTripButton.setOnClickListener { saveTrip(intent.extras.getString("tripName", "New Trip"), businesses.asList()) }
 
         //saveTrip("1",businesses.asList())
@@ -127,6 +126,7 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
 
     private fun saveTrip(tripName: String, businesses: List<TGBusiness>) {
         Paper.book(tripBook).write(tripName, businesses)
+        Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show()
     }
 
     private fun getTrip(tripName: String): List<TGBusiness> {

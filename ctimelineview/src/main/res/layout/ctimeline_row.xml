@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Date"
+            android:text="@string/date"
             />
 
         <TextView
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:textSize="30sp"
-            android:text="Title"
+            android:text="@string/title"
             android:layout_below="@id/crowDate"
             android:textStyle="bold"
             android:layout_centerVertical="true"
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSearchResultSubtitle"
-            android:text="Description"
+            android:text="@string/description"
             android:textSize="20sp"
             android:layout_below="@id/crowTitle"
             android:layout_centerVertical="true"

@@ -29,7 +29,7 @@
         android:id="@+id/saveTripButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Trip"
+        android:text="@string/save_trip"
         app:bootstrapSize="lg"
         app:bootstrapBrand="primary"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -8,4 +8,17 @@
     <string name="lunch">lunch</string>
     <string name="dinner">dinner</string>
     <string name="activity">activity</string>
+    <string name="price">Price</string>
+    <string name="load_a_trip_instead">Load A Trip Instead</string>
+    <string name="distance">Distance</string>
+    <string name="cheap">$</string>
+    <string name="reasonable">$$</string>
+    <string name="pricey">$$$</string>
+    <string name="expensive">$$$$</string>
+    <string name="walking_distance">Walking</string>
+    <string name="biking_distance">Biking</string>
+    <string name="driving_distance">Driving</string>
+    <string name="save_trip">Save Trip</string>
+    <string name="error">Error</string>
+    <string name="delete">Delete</string>
 </resources>

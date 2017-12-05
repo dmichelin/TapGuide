@@ -20,7 +20,7 @@
         android:textSize="@dimen/bootstrap_h5_text_size"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Error"
+        android:text="@string/error"
         app:layout_constraintBottom_toBottomOf="@+id/businessImage"
         app:layout_constraintStart_toEndOf="@+id/businessImage"
         app:layout_constraintEnd_toEndOf="@id/description" />
