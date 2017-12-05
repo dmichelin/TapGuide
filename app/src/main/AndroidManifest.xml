@@ -15,6 +15,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name="tech.danielmichelin.tapguide.Screens.InitializeTripScreen.InitializeTripActivity">
         </activity>
+        <activity android:name=".Screens.ChooseSavedTripScreen.ChooseSavedTripScreenActivity"></activity>
         <activity android:name="tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity">
         </activity>
         <activity android:name="tech.danielmichelin.tapguide.Screens.SplashScreen.SplashScreenActivity"

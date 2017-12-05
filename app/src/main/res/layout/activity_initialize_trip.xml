@@ -52,12 +52,26 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Price"
+        android:text="@string/price"
         app:layout_constraintBottom_toTopOf="@+id/priceButtonGroup"
         app:layout_constraintEnd_toEndOf="@+id/priceButtonGroup"
         app:layout_constraintStart_toStartOf="@+id/priceButtonGroup" />
 
-
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/load_trip_btn"
+        app:bootstrapSize="lg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/load_a_trip_instead"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postalCodeEt" />
 
     <TextView
         android:id="@+id/textView"
@@ -66,7 +80,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Distance"
+        android:text="@string/distance"
         app:layout_constraintBottom_toTopOf="@id/distanceButtonGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -91,22 +105,22 @@
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$" />
+            android:text="@string/cheap" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$" />
+            android:text="@string/reasonable" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$$" />
+            android:text="@string/pricey" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$$$$" />
+            android:text="@string/expensive" />
     </com.beardedhen.androidbootstrap.BootstrapButtonGroup>
 
     <com.beardedhen.androidbootstrap.BootstrapButtonGroup
@@ -129,17 +143,17 @@
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Walking" />
+            android:text="@string/walking_distance" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Biking" />
+            android:text="@string/biking_distance" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Driving" />
+            android:text="@string/driving_distance" />
 
 
     </com.beardedhen.androidbootstrap.BootstrapButtonGroup>
