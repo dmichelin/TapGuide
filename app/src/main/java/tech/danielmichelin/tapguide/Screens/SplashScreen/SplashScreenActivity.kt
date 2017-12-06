@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import tech.danielmichelin.tapguide.Helpers.LocationHelper
-import tech.danielmichelin.tapguide.Screens.InitializeTripScreen.InitializeTripActivity
-import tech.danielmichelin.tapguide.R
-import java.util.*
 import tech.danielmichelin.tapguide.Helpers.PermissionHelper
+import tech.danielmichelin.tapguide.R
+import tech.danielmichelin.tapguide.Screens.InitializeTripScreen.InitializeTripActivity
+import java.util.*
 
 
 /**
@@ -42,9 +42,11 @@ class SplashScreenActivity : AppCompatActivity(),SplashScreenView{
         var intent = Intent(this, InitializeTripActivity::class.java)
         if (loc != null) {
             var locList = geoCoder.getFromLocation(loc!!.latitude, loc.longitude, 1)
-            intent.putExtra("ZIP", locList.get(0).postalCode)
+            val address = locList.get(0)
+            val addressString = address.getAddressLine(0) + ", " + address.postalCode
+            intent.putExtra("address", addressString)
         } else {
-            intent.putExtra("ZIP", "0000")
+            intent.putExtra("address", "")
         }
         // then navigate to the next activity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -95,6 +95,11 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
                 food.businesses.removeAll(newList)
                 activities.businesses.removeAll(newList)
 
+                if (newList.size < 1) {
+                    error = true
+                    errorMsg = "No results were found! Try a different search criteria"
+                }
+
             } catch (err: UnexpectedAPIError) {
                 error = true
                 errorMsg = err.description

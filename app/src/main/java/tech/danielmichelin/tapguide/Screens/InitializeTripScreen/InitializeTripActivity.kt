@@ -35,7 +35,7 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
 
         // get the zip code from the previous intent
         val zipCodeEt = findViewById<EditText>(R.id.postalCodeEt)
-        zipCodeEt.text = Editable.Factory.getInstance().newEditable(intent.getStringExtra("ZIP"))
+        zipCodeEt.text = Editable.Factory.getInstance().newEditable(intent.getStringExtra("address"))
 
         // get the two radio buttons
         distanceRadio= findViewById(R.id.distanceButtonGroup)
