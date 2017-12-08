@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -51,15 +52,27 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
 
         saveTripButton.setOnClickListener { saveTrip(intent.extras.getString("tripName", "New Trip"), businesses.asList()) }
 
-        //saveTrip("1",businesses.asList())
-        //getTrip("1")
+
         val timelineRowsList = ArrayList<TimelineRow>()
         for(i in 0..businesses.size-1){
             val business = businesses.get(i)
             val row = TimelineRow(i)
             row.setImageSize(150);
+            row.openAt = business.hours?.get(0)?.open?.get(0)?.start
+            row.closedAt = business.hours?.get(0)?.open?.get(0)?.end
+
+            if (i > 0) {
+                val businessBefore = businesses[i - 1]
+                val floatArray = FloatArray(10)
+                Location.distanceBetween(business.coordinates.latitude,
+                        business.coordinates.longitude, businessBefore.coordinates.latitude,
+                        businessBefore.coordinates.longitude, floatArray)
+                row.distanceInMeters = floatArray.get(0).toDouble();
+
+            }
+
             row.setBelowLineColor(Color.argb(255, 10, 100, 255));
-// To set row Below Line Size in dp (optional)
+            // To set row Below Line Size in dp (optional)
             row.setBelowLineSize(20);
             row.setOnClickListener {
                 val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
@@ -129,7 +142,4 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show()
     }
 
-    private fun getTrip(tripName: String): List<TGBusiness> {
-        return Paper.book(tripBook).read(tripName, ArrayList())
-    }
 }

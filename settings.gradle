@@ -1,1 +1,1 @@
-include ':app', ':yelp-fusion-client', ':ctimelineview'
+include ':app', ':yelp-fusion-client', ':ExtendedTimelineView'
