@@ -53,6 +53,12 @@ class ChooseSavedTripScreenActivity : AppCompatActivity() {
                 intent.putExtra("tripName", getItem(position))
                 startActivity(intent)
             })
+            view.findViewById<BootstrapButton>(R.id.open_trip_button).setOnClickListener {
+                val intent = Intent(context, TripOverviewActivity::class.java)
+                intent.putExtra("businesses", trips.toTypedArray())
+                intent.putExtra("tripName", getItem(position))
+                startActivity(intent)
+            }
             val deleteBtn = view.findViewById<BootstrapButton>(R.id.delete_trip_button)
             deleteBtn.setOnClickListener {
                 Paper.book(TripOverviewActivity.tripBook).delete(getItem(position))
