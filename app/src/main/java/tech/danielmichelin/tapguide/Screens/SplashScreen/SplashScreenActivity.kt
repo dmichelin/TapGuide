@@ -43,7 +43,7 @@ class SplashScreenActivity : AppCompatActivity(),SplashScreenView{
         if (loc != null) {
             var locList = geoCoder.getFromLocation(loc!!.latitude, loc.longitude, 1)
             val address = locList.get(0)
-            val addressString = address.getAddressLine(0) + ", " + address.postalCode
+            val addressString = address.getAddressLine(0)
             intent.putExtra("address", addressString)
         } else {
             intent.putExtra("address", "")
