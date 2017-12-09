@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:src="@android:drawable/ic_dialog_map"
+        android:src="@drawable/ic_navigation_black_24dp"
         app:fab_colorNormal="@color/bootstrap_brand_primary"
         app:layout_constraintBottom_toTopOf="@id/saveTripButton"
         app:layout_constraintEnd_toEndOf="parent" />

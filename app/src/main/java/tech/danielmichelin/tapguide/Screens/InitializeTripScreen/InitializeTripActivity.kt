@@ -79,7 +79,7 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
     override fun navigateToTripOverviewScreen(businesses: MutableList<TGBusiness>, tripName: String?) {
         loadingDialog.dismiss()
         val intent = Intent(this,TripOverviewActivity::class.java)
-        intent.putExtra("businesses",businesses.toTypedArray())
+        intent.putExtra(TripOverviewActivity.BUSINESSES, businesses.toTypedArray())
         intent.putExtra("tripName", tripName)
         startActivity(intent)
     }

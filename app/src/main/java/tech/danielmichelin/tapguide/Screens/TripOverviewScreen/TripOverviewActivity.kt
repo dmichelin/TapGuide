@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
 import com.beardedhen.androidbootstrap.BootstrapButton
@@ -20,6 +22,7 @@ import org.qap.ctimelineview.TimelineRow
 import org.qap.ctimelineview.TimelineViewAdapter
 import tech.danielmichelin.tapguide.Helpers.LocationHelper
 import tech.danielmichelin.tapguide.Model.TGBusiness
+import tech.danielmichelin.tapguide.Model.TGTimelineRow
 import tech.danielmichelin.tapguide.R
 
 
@@ -33,6 +36,13 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
     lateinit var tripOptionsFab: FloatingActionButton
     var loaded = false
 
+    companion object {
+        val tripBook = "SAVED_TRIPS"
+        val BREAKFAST_OPTIONS = "BREAKFAST_OPTIONS"
+        val BUSINESSES = "businesses"
+        val TRIP_NAME = "TRIP_NAME"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialize our database
@@ -45,51 +55,24 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
 
         // implement timelineview
         listView = findViewById<ListView>(R.id.activity_list)
-        val businesses = intent.extras.get("businesses") as Array<TGBusiness>
+        val businesses = intent.extras.get(BUSINESSES) as Array<TGBusiness>
 
         // set the trip saved button
         val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
 
-        saveTripButton.setOnClickListener { saveTrip(intent.extras.getString("tripName", "New Trip"), businesses.asList()) }
+        saveTripButton.setOnClickListener { saveTrip(intent.extras.getString(TRIP_NAME, "New Trip"), businesses.asList()) }
 
 
         val timelineRowsList = ArrayList<TimelineRow>()
         for(i in 0..businesses.size-1){
-            val business = businesses.get(i)
-            val row = TimelineRow(i)
-            row.setImageSize(150);
-            row.openAt = business.hours?.get(0)?.open?.get(0)?.start
-            row.closedAt = business.hours?.get(0)?.open?.get(0)?.end
-
-            if (i > 0) {
-                val businessBefore = businesses[i - 1]
-                val floatArray = FloatArray(10)
-                Location.distanceBetween(business.coordinates.latitude,
-                        business.coordinates.longitude, businessBefore.coordinates.latitude,
-                        businessBefore.coordinates.longitude, floatArray)
-                row.distanceInMeters = floatArray.get(0).toDouble();
-
-            }
-
-            row.setBelowLineColor(Color.argb(255, 10, 100, 255));
-            // To set row Below Line Size in dp (optional)
-            row.setBelowLineSize(20);
-            row.setOnClickListener {
-                val uri = Uri.parse("geo:?q="+(business.location.address1+" "+business.location.zipCode).replace(" ", "%20"))
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setData(uri)
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } }
-            row.title= business.eventType
-            row.description = business.name
-            row.image = business.imageUrl
-
+            val row = TGTimelineRow(i)
+            row.businesses = businesses
+            row.position = i
             timelineRowsList.add(row)
         }
         listView.isVerticalScrollBarEnabled= false
         listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
-        listView.adapter = TimelineViewAdapter(this,0,timelineRowsList,false)
+        listView.adapter = TGTimelineView(timelineRowsList)
         Log.d("Test", "Test")
 
         // set the onclick adapter for the floating action button
@@ -133,13 +116,62 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         }
     }
 
-    companion object {
-        val tripBook = "SAVED_TRIPS"
-    }
-
     private fun saveTrip(tripName: String, businesses: List<TGBusiness>) {
         Paper.book(tripBook).write(tripName, businesses)
         Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show()
+    }
+
+    inner class TGTimelineView(objects: ArrayList<TimelineRow>) : TimelineViewAdapter(this, 0, objects, false) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val row = getItem(position) as TGTimelineRow
+            val business = row.businesses.get(row.position)
+            row.setImageSize(150)
+            row.openAt = business.hours?.get(0)?.open?.get(0)?.start
+            row.closedAt = business.hours?.get(0)?.open?.get(0)?.end
+            val i = position
+            if (i > 0) {
+                val rowBefore = getItem(position - 1) as TGTimelineRow
+                val businessBefore = rowBefore.businesses.get(rowBefore.position)
+                val floatArray = FloatArray(10)
+                Location.distanceBetween(business.coordinates.latitude,
+                        business.coordinates.longitude, businessBefore.coordinates.latitude,
+                        businessBefore.coordinates.longitude, floatArray)
+                row.distanceInMeters = floatArray.get(0).toDouble();
+
+            }
+
+            row.setBelowLineColor(Color.argb(255, 10, 100, 255));
+            // To set row Below Line Size in dp (optional)
+            row.setBelowLineSize(20);
+            row.setOnClickListener {
+                val uri = Uri.parse("geo:?q=" + (business.location.address1 + " " + business.location.zipCode).replace(" ", "%20"))
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(uri)
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+            row.title = business.eventType
+            row.description = business.name
+            row.image = business.imageUrl
+
+            val view = super.getView(position, convertView, parent)
+
+            view.findViewById<ImageButton>(R.id.left_button).setOnClickListener({
+                if (row.position > 0) {
+                    row.position--
+                    notifyDataSetChanged()
+                }
+            })
+            view.findViewById<ImageButton>(R.id.right_button).setOnClickListener({
+                if (row.position < row.businesses.size - 1) {
+                    row.position++
+                    notifyDataSetChanged()
+                }
+            })
+
+            return view
+        }
     }
 
 }
