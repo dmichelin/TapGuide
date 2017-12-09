@@ -8,5 +8,5 @@ import tech.danielmichelin.tapguide.Model.TGBusiness
 interface InitializeTripView{
     fun showBuildingTripDialog()
     fun showErrorDialog(errorText: String?)
-    fun navigateToTripOverviewScreen(businesses: MutableList<TGBusiness>, tripName: String?)
+    fun navigateToTripOverviewScreen(businesses: Map<String, List<TGBusiness>>, tripName: String?)
 }

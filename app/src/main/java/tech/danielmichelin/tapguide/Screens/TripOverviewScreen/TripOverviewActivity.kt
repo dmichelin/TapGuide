@@ -55,7 +55,9 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
 
         // implement timelineview
         listView = findViewById<ListView>(R.id.activity_list)
-        val businesses = intent.extras.get(BUSINESSES) as Array<TGBusiness>
+        val extras = intent.extras
+        val businesses = extras.get(BUSINESSES) as Array<TGBusiness>
+        val breakfast = extras.get(BREAKFAST_OPTIONS) as Array<TGBusiness>
 
         // set the trip saved button
         val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
@@ -66,8 +68,9 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         val timelineRowsList = ArrayList<TimelineRow>()
         for(i in 0..businesses.size-1){
             val row = TGTimelineRow(i)
-            row.businesses = businesses
-            row.position = i
+            val rowBus = breakfast.plus(businesses[i])
+            row.businesses = rowBus
+            row.position = rowBus.size - 1
             timelineRowsList.add(row)
         }
         listView.isVerticalScrollBarEnabled= false

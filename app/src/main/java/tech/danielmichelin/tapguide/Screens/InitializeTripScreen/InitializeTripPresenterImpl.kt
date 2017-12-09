@@ -8,6 +8,7 @@ import tech.danielmichelin.tapguide.Enums.Distances
 import tech.danielmichelin.tapguide.Enums.PriceLevels
 import tech.danielmichelin.tapguide.Helpers.YelpApiHelper
 import tech.danielmichelin.tapguide.Model.TGBusiness
+import tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity
 
 /**
  * Created by Daniel on 11/27/2017.
@@ -25,17 +26,19 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
 
     }
 
-    inner class buildItineraryTask(var error: Boolean = false) : AsyncTask<MutableMap<String, String>, Int, MutableList<TGBusiness>>() {
+    inner class buildItineraryTask(var error: Boolean = false) : AsyncTask<MutableMap<String, String>, Int, Map<String, List<TGBusiness>>>() {
         var errorMsg: String? = "The error was.... no error?"
         var tripName: String? = null
         override fun onPreExecute() {
             super.onPreExecute()
             tripView.showBuildingTripDialog()
         }
-        override fun doInBackground(vararg params: MutableMap<String, String>): MutableList<TGBusiness> {
+
+        override fun doInBackground(vararg params: MutableMap<String, String>): Map<String, List<TGBusiness>> {
             tripName = params[0]["location"]
             var factory = YelpFusionApiFactory()
             val newList = mutableListOf<TGBusiness>()
+            val businessMap = HashMap<String, MutableList<TGBusiness>>()
             try {
                 val api = factory.createAPI(YelpApiHelper.clientId, YelpApiHelper.clientSecret)
                 params[0]["term"] = "breakfast"
@@ -90,11 +93,22 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
                     newList.add(item)
                 }
 
+
                 breakfast.businesses.removeAll(newList)
                 nightlife.businesses.removeAll(newList)
                 food.businesses.removeAll(newList)
                 activities.businesses.removeAll(newList)
 
+                // convert the businesses to TGBusinesses
+                val tgBreakfast = ArrayList<TGBusiness>()
+                breakfast.businesses.forEach { business -> tgBreakfast.add(TGBusiness(business, "Breakfast")) }
+
+                // convert the businesses to TGBusinesses
+                val tgNightlife = ArrayList<TGBusiness>()
+                nightlife.businesses.forEach { business -> tgNightlife.add(TGBusiness(business, "Nightlife")) }
+
+                businessMap[TripOverviewActivity.BUSINESSES] = newList
+                businessMap[TripOverviewActivity.BREAKFAST_OPTIONS] = tgBreakfast
                 if (newList.size < 1) {
                     error = true
                     errorMsg = "No results were found! Try a different search criteria"
@@ -104,10 +118,10 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
                 error = true
                 errorMsg = err.description
             }
-            return newList
+            return businessMap
         }
 
-        override fun onPostExecute(result: MutableList<TGBusiness>) {
+        override fun onPostExecute(result: Map<String, List<TGBusiness>>) {
             super.onPostExecute(result)
 
             if (!error) tripView.navigateToTripOverviewScreen(result, tripName)

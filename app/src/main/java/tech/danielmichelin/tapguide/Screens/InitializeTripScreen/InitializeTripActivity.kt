@@ -76,10 +76,12 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         AlertDialog.Builder(this).setMessage(errorText).show()
     }
 
-    override fun navigateToTripOverviewScreen(businesses: MutableList<TGBusiness>, tripName: String?) {
+    override fun navigateToTripOverviewScreen(businessMap: Map<String, List<TGBusiness>>, tripName: String?) {
         loadingDialog.dismiss()
         val intent = Intent(this,TripOverviewActivity::class.java)
-        intent.putExtra(TripOverviewActivity.BUSINESSES, businesses.toTypedArray())
+        val businesses = businessMap[TripOverviewActivity.BUSINESSES]
+        intent.putExtra(TripOverviewActivity.BUSINESSES, businesses?.toTypedArray())
+        intent.putExtra(TripOverviewActivity.BREAKFAST_OPTIONS, businessMap[TripOverviewActivity.BREAKFAST_OPTIONS]?.toTypedArray())
         intent.putExtra("tripName", tripName)
         startActivity(intent)
     }
