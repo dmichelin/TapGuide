@@ -48,11 +48,15 @@ public class TimelineViewAdapter extends ArrayAdapter<TimelineRow> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        View view;
         TimelineRow row = RowDataList.get(position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.ctimeline_row, null);
+        if (convertView == null) {
+            view = inflater.inflate(R.layout.ctimeline_row, null);
+        } else {
+            view = convertView;
+        }
 
         TextView rowDate = (TextView) view.findViewById(R.id.crowDate);
         TextView rowTitle = (TextView) view.findViewById(R.id.crowTitle);

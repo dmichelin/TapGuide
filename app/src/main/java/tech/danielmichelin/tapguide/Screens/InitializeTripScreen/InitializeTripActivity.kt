@@ -60,7 +60,7 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
 
     override fun onResume() {
         super.onResume()
-        if (Paper.book(TripOverviewActivity.tripBook).allKeys.size > 0) {
+        if (Paper.book(TripOverviewActivity.TRIP_BOOK).allKeys.size > 0) {
             openSavedTripsBtn.visibility = View.VISIBLE
         }
     }
@@ -76,11 +76,22 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         AlertDialog.Builder(this).setMessage(errorText).show()
     }
 
-    override fun navigateToTripOverviewScreen(businesses: MutableList<TGBusiness>, tripName: String?) {
+    override fun navigateToTripOverviewScreen(businessMap: Map<String, List<TGBusiness>>, tripName: String?) {
         loadingDialog.dismiss()
+
         val intent = Intent(this,TripOverviewActivity::class.java)
-        intent.putExtra("businesses",businesses.toTypedArray())
-        intent.putExtra("tripName", tripName)
+        val businesses = businessMap[TripOverviewActivity.BUSINESSES]
+        val breakfast = businessMap[TripOverviewActivity.BREAKFAST_OPTIONS]
+        val nightlife = businessMap[TripOverviewActivity.NIGHTLIFE_OPTIONS]
+        val food = businessMap[TripOverviewActivity.NON_BREAKFAST_OPTIONS]
+        val activites = businessMap[TripOverviewActivity.ACTIVITY_OPTIONS]
+
+        intent.putExtra(TripOverviewActivity.BUSINESSES, businesses?.toTypedArray())
+        intent.putExtra(TripOverviewActivity.BREAKFAST_OPTIONS, breakfast?.toTypedArray())
+        intent.putExtra(TripOverviewActivity.NIGHTLIFE_OPTIONS, nightlife?.toTypedArray())
+        intent.putExtra(TripOverviewActivity.NON_BREAKFAST_OPTIONS, food?.toTypedArray())
+        intent.putExtra(TripOverviewActivity.ACTIVITY_OPTIONS, activites?.toTypedArray())
+        intent.putExtra(TripOverviewActivity.TRIP_NAME, tripName)
         startActivity(intent)
     }
 

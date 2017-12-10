@@ -164,7 +164,29 @@
                 android:layout_marginRight="80dp"
                 android:src="@drawable/ic_info"
                 android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/right_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/left_button"
+                android:src="@drawable/ic_chevron_right_black_24dp"
+                android:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/left_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/crowDesc"
+                android:layout_toLeftOf="@+id/right_button"
+                android:layout_toStartOf="@+id/right_button"
+                android:scaleX="-1"
+                android:src="@drawable/ic_chevron_right_black_24dp"
+                android:tint="@android:color/white" />
         </RelativeLayout>
+
 
     </LinearLayout>
 
