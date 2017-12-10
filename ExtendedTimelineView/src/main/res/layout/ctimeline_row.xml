@@ -172,7 +172,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/left_button"
-                android:backgroundTint="#0275d8"
                 android:src="@drawable/ic_chevron_right_black_24dp"
                 android:tint="@android:color/white" />
 
@@ -183,7 +182,6 @@
                 android:layout_above="@+id/crowDesc"
                 android:layout_toLeftOf="@+id/right_button"
                 android:layout_toStartOf="@+id/right_button"
-                android:backgroundTint="#0275d8"
                 android:scaleX="-1"
                 android:src="@drawable/ic_chevron_right_black_24dp"
                 android:tint="@android:color/white" />

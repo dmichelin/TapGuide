@@ -3,10 +3,12 @@ package tech.danielmichelin.tapguide.Screens.TripOverviewScreen
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
@@ -89,9 +91,8 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
             } else {
                 for (i in 0..businesses.size - 1) {
                     val row = TGTimelineRow(i)
-                    val rowBus = businesses
-                    row.businesses = rowBus
-                    row.position = i
+                    row.businesses = arrayOf(businesses[i])
+                    row.position = 0
                     timelineRowsList.add(row)
                 }
             }
@@ -198,13 +199,37 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
             row.image = business.imageUrl
 
             val view = super.getView(position, convertView, parent)
-            view.findViewById<ImageButton>(R.id.left_button).setOnClickListener({
+            val leftButton = view.findViewById<ImageButton>(R.id.left_button)
+            if (row.position <= 0) {
+                val color = resources.getColor(android.R.color.darker_gray)
+                ViewCompat.setBackgroundTintList(leftButton, ColorStateList.valueOf(color))
+                ViewCompat.setElevation(leftButton, 0F)
+            } else {
+                val color = resources.getColor(R.color.bootstrap_brand_primary)
+                ViewCompat.setBackgroundTintList(leftButton, ColorStateList.valueOf(color))
+                ViewCompat.setElevation(leftButton, 10F)
+            }
+            leftButton.setOnClickListener({
                 if (row.position > 0) {
                     row.position--
                     notifyDataSetChanged()
                 }
             })
-            view.findViewById<ImageButton>(R.id.right_button).setOnClickListener({
+            val rightButton = view.findViewById<ImageButton>(R.id.right_button)
+            if (row.position >= row.businesses.size - 1) {
+                //rightButton.visibility = View.INVISIBLE
+                val color = resources.getColor(android.R.color.darker_gray)
+                ViewCompat.setBackgroundTintList(rightButton, ColorStateList.valueOf(color))
+                ViewCompat.setElevation(rightButton, 0F)
+
+            } else {
+                rightButton.visibility = View.VISIBLE
+                rightButton.isActivated = true
+                val color = resources.getColor(R.color.bootstrap_brand_primary)
+                ViewCompat.setBackgroundTintList(rightButton, ColorStateList.valueOf(color))
+                ViewCompat.setElevation(rightButton, 10F)
+            }
+            rightButton.setOnClickListener({
                 if (row.position < row.businesses.size - 1) {
                     row.position++
                     notifyDataSetChanged()

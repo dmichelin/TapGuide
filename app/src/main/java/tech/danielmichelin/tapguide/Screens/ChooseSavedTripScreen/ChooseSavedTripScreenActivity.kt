@@ -49,14 +49,14 @@ class ChooseSavedTripScreenActivity : AppCompatActivity() {
             Picasso.with(context).load(imageString).centerCrop().resize(300, 300).into(tripImage)
             tripImage.setOnClickListener({
                 val intent = Intent(context, TripOverviewActivity::class.java)
-                intent.putExtra("businesses", trips.toTypedArray())
-                intent.putExtra("tripName", getItem(position))
+                intent.putExtra(TripOverviewActivity.BUSINESSES, trips.toTypedArray())
+                intent.putExtra(TripOverviewActivity.TRIP_NAME, getItem(position))
                 startActivity(intent)
             })
             view.findViewById<BootstrapButton>(R.id.open_trip_button).setOnClickListener {
                 val intent = Intent(context, TripOverviewActivity::class.java)
-                intent.putExtra("businesses", trips.toTypedArray())
-                intent.putExtra("tripName", getItem(position))
+                intent.putExtra(TripOverviewActivity.BUSINESSES, trips.toTypedArray())
+                intent.putExtra(TripOverviewActivity.TRIP_NAME, getItem(position))
                 startActivity(intent)
             }
             val deleteBtn = view.findViewById<BootstrapButton>(R.id.delete_trip_button)
