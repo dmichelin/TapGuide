@@ -8,9 +8,9 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toast
@@ -37,9 +37,12 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
     var loaded = false
 
     companion object {
-        val tripBook = "SAVED_TRIPS"
+        val TRIP_BOOK = "SAVED_TRIPS"
         val BREAKFAST_OPTIONS = "BREAKFAST_OPTIONS"
-        val BUSINESSES = "businesses"
+        val ACTIVITY_OPTIONS = "ACTIVITY_OPTIONS"
+        val NON_BREAKFAST_OPTIONS = "NON_BREAKFAST_OPTIONS"
+        val NIGHTLIFE_OPTIONS = "NIGHTLIFE_OPTIONS"
+        val BUSINESSES = "MAIN_BUSINESSES"
         val TRIP_NAME = "TRIP_NAME"
     }
 
@@ -56,33 +59,69 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
         // implement timelineview
         listView = findViewById<ListView>(R.id.activity_list)
         val extras = intent.extras
-        val businesses = extras.get(BUSINESSES) as Array<TGBusiness>
-        val breakfast = extras.get(BREAKFAST_OPTIONS) as Array<TGBusiness>
-
-        // set the trip saved button
-        val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
-
-        saveTripButton.setOnClickListener { saveTrip(intent.extras.getString(TRIP_NAME, "New Trip"), businesses.asList()) }
 
 
-        val timelineRowsList = ArrayList<TimelineRow>()
-        for(i in 0..businesses.size-1){
-            val row = TGTimelineRow(i)
-            val rowBus = breakfast.plus(businesses[i])
-            row.businesses = rowBus
-            row.position = rowBus.size - 1
-            timelineRowsList.add(row)
+
+        if (extras.containsKey(BUSINESSES)) {
+            val businesses = extras.get(BUSINESSES) as Array<TGBusiness>
+            // set the trip saved button
+            val tripSaveButton = findViewById<BootstrapButton>(R.id.saveTripButton)
+
+            saveTripButton.setOnClickListener { saveTrip(intent.extras.getString(TRIP_NAME, "New Trip"), businesses.asList()) }
+
+
+            val timelineRowsList = ArrayList<TimelineRow>()
+            // if breakfast options is contained, the rest are
+
+            if (extras.containsKey(BREAKFAST_OPTIONS)) {
+                val breakfast = extras.get(BREAKFAST_OPTIONS) as Array<TGBusiness>
+                val nightlife = extras.get(NIGHTLIFE_OPTIONS) as Array<TGBusiness>
+                val activities = extras.get(ACTIVITY_OPTIONS) as Array<TGBusiness>
+                val food = extras.get(NON_BREAKFAST_OPTIONS) as Array<TGBusiness>
+                val combinedBusinesses = arrayOf(breakfast, activities, food, activities, activities, food, nightlife)
+                for (i in 0..businesses.size - 1) {
+                    val row = TGTimelineRow(i)
+                    val rowBus = combinedBusinesses.get(i)
+                    row.businesses = rowBus.plus(businesses[i])
+                    row.position = rowBus.size
+                    timelineRowsList.add(row)
+                }
+            } else {
+                for (i in 0..businesses.size - 1) {
+                    val row = TGTimelineRow(i)
+                    val rowBus = businesses
+                    row.businesses = rowBus
+                    row.position = i
+                    timelineRowsList.add(row)
+                }
+            }
+
+
+            listView.isVerticalScrollBarEnabled = false
+            listView.viewTreeObserver.addOnGlobalLayoutListener({ initSpruce() })
+            listView.adapter = TGTimelineView(timelineRowsList)
+
+            // set the onclick adapter for the floating action button
+            tripOptionsFab = findViewById(R.id.fab)
+            tripOptionsFab.setOnClickListener {
+                startIntentFromUri(tripOverviewPresenter.generateLocationUri(getLastLocationPair(), businesses.asList()))
+            }
+
+            listView.setOnScrollListener(object : AbsListView.OnScrollListener {
+                override fun onScroll(view: AbsListView?, firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int) {
+                    if (firstVisibleItem < 1) {
+                        tripOptionsFab.show(true)
+                    } else {
+                        tripOptionsFab.hide(true)
+                    }
+                }
+
+                override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+                    // do nothing
+                }
+            })
         }
-        listView.isVerticalScrollBarEnabled= false
-        listView.viewTreeObserver.addOnGlobalLayoutListener({initSpruce()})
-        listView.adapter = TGTimelineView(timelineRowsList)
-        Log.d("Test", "Test")
 
-        // set the onclick adapter for the floating action button
-        tripOptionsFab = findViewById(R.id.fab)
-        tripOptionsFab.setOnClickListener {
-            startIntentFromUri(tripOverviewPresenter.generateLocationUri(getLastLocationPair(), businesses.asList()))
-        }
 
     }
     fun initSpruce(){
@@ -120,7 +159,7 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
     }
 
     private fun saveTrip(tripName: String, businesses: List<TGBusiness>) {
-        Paper.book(tripBook).write(tripName, businesses)
+        Paper.book(TRIP_BOOK).write(tripName, businesses)
         Toast.makeText(this, "Saved!", Toast.LENGTH_LONG).show()
     }
 
@@ -154,12 +193,11 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
                     startActivity(intent);
                 }
             }
-            row.title = business.eventType
+            row.title = row.businesses.get(row.businesses.lastIndex).eventType
             row.description = business.name
             row.image = business.imageUrl
 
             val view = super.getView(position, convertView, parent)
-
             view.findViewById<ImageButton>(R.id.left_button).setOnClickListener({
                 if (row.position > 0) {
                     row.position--

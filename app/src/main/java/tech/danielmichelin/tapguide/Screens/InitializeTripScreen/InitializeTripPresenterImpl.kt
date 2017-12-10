@@ -107,8 +107,19 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
                 val tgNightlife = ArrayList<TGBusiness>()
                 nightlife.businesses.forEach { business -> tgNightlife.add(TGBusiness(business, "Nightlife")) }
 
+                // convert the businesses to TGBusinesses
+                val tgFood = ArrayList<TGBusiness>()
+                food.businesses.forEach { business -> tgFood.add(TGBusiness(business, "Lunch/Dinner")) }
+
+                // convert the businesses to TGBusinesses
+                val tgActivities = ArrayList<TGBusiness>()
+                activities.businesses.forEach { business -> tgActivities.add(TGBusiness(business, "Activity")) }
+
                 businessMap[TripOverviewActivity.BUSINESSES] = newList
                 businessMap[TripOverviewActivity.BREAKFAST_OPTIONS] = tgBreakfast
+                businessMap[TripOverviewActivity.NIGHTLIFE_OPTIONS] = tgNightlife
+                businessMap[TripOverviewActivity.ACTIVITY_OPTIONS] = tgActivities
+                businessMap[TripOverviewActivity.NON_BREAKFAST_OPTIONS] = tgFood
                 if (newList.size < 1) {
                     error = true
                     errorMsg = "No results were found! Try a different search criteria"

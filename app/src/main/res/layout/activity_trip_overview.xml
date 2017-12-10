@@ -11,6 +11,7 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:paddingLeft="10dp"
+        android:overScrollMode="always"
         app:layout_constraintBottom_toTopOf="@id/saveTripButton"
         app:layout_constraintTop_toTopOf="parent" />
 
