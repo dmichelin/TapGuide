@@ -83,7 +83,7 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
                 val combinedBusinesses = arrayOf(breakfast, activities, food, activities, activities, food, nightlife)
                 for (i in 0..businesses.size - 1) {
                     val row = TGTimelineRow(i)
-                    val rowBus = combinedBusinesses.get(i)
+                    val rowBus = combinedBusinesses.first { bArr -> bArr.any { b -> b.eventType.equals(businesses[i]) } }
                     row.businesses = rowBus.plus(businesses[i])
                     row.position = rowBus.size
                     timelineRowsList.add(row)

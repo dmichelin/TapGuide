@@ -91,7 +91,7 @@ class InitializeTripActivity : AppCompatActivity(), InitializeTripView, Building
         intent.putExtra(TripOverviewActivity.NIGHTLIFE_OPTIONS, nightlife?.toTypedArray())
         intent.putExtra(TripOverviewActivity.NON_BREAKFAST_OPTIONS, food?.toTypedArray())
         intent.putExtra(TripOverviewActivity.ACTIVITY_OPTIONS, activites?.toTypedArray())
-        intent.putExtra("tripName", tripName)
+        intent.putExtra(TripOverviewActivity.TRIP_NAME, tripName)
         startActivity(intent)
     }
 
