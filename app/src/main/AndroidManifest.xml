@@ -5,20 +5,19 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <application
 
+    <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="tech.danielmichelin.tapguide.Screens.InitializeTripScreen.InitializeTripActivity">
-        </activity>
-        <activity android:name=".Screens.ChooseSavedTripScreen.ChooseSavedTripScreenActivity"></activity>
-        <activity android:name="tech.danielmichelin.tapguide.Screens.TripOverviewScreen.TripOverviewActivity">
-        </activity>
-        <activity android:name="tech.danielmichelin.tapguide.Screens.SplashScreen.SplashScreenActivity"
+        <activity android:name=".Screens.InitializeTripScreen.InitializeTripActivity"></activity>
+        <activity android:name=".Screens.ChooseSavedTripScreen.ChooseSavedTripScreenActivity" />
+        <activity android:name=".Screens.TripOverviewScreen.TripOverviewActivity"></activity>
+        <activity
+            android:name=".Screens.SplashScreen.SplashScreenActivity"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -27,7 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Screens.BusinessOverviewScreen.BusinessOverviewActivity"
+            android:label="@string/title_activity_business_overview"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
-
 
 </manifest>
