@@ -26,6 +26,7 @@ import tech.danielmichelin.tapguide.Helpers.LocationHelper
 import tech.danielmichelin.tapguide.Model.TGBusiness
 import tech.danielmichelin.tapguide.Model.TGTimelineRow
 import tech.danielmichelin.tapguide.R
+import tech.danielmichelin.tapguide.Screens.BusinessOverviewScreen.BusinessOverviewActivity
 
 
 /**
@@ -187,12 +188,9 @@ class TripOverviewActivity : AppCompatActivity(), TripOverviewView {
             // To set row Below Line Size in dp (optional)
             row.setBelowLineSize(20);
             row.setOnClickListener {
-                val uri = Uri.parse("geo:?q=" + (business.location.address1 + " " + business.location.zipCode).replace(" ", "%20"))
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setData(uri)
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
+                val intent = Intent(context, BusinessOverviewActivity::class.java)
+                intent.putExtra(BusinessOverviewActivity.BUSINESS, business)
+                startActivity(intent)
             }
             row.title = row.businesses.get(row.businesses.lastIndex).eventType
             row.description = business.name
