@@ -40,7 +40,7 @@ class InitializeTripPresenterImpl(val tripView: InitializeTripView): InitializeT
             val newList = mutableListOf<TGBusiness>()
             val businessMap = HashMap<String, MutableList<TGBusiness>>()
             try {
-                val api = factory.createAPI(YelpApiHelper.clientId, YelpApiHelper.clientSecret)
+                val api = factory.createAPI(YelpApiHelper.apiKey)
                 params[0]["term"] = "breakfast"
                 val breakfast = api.getBusinessSearch(params[0]).execute().body()
                 params[0]["term"] = "food"

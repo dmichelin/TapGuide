@@ -8,12 +8,11 @@ import com.yelp.fusion.client.connection.YelpFusionApiFactory
  * Created by Daniel on 11/26/2017. Provides access to the Yelp API
  */
 object YelpApiHelper{
-    val clientId = "aQpdbu-Y1NYgJhnAJsLa0w"
-    val clientSecret = "oJAdpOFKbeDToUkcsb29qmxJ5fA9uuwD602SoVp37yW9ghbkIQdU8ODBhJchxbhY"
+    val apiKey = "_oGWTwCIAkp9KXQn5uL5w3Mc1VIgXOmagNSdubrpKoelns70Q9CqwpI14W_hadt0GNOckHCFRC6-1eONrqMmnUPicm98bCuptxR_GD5qTofKtPqww9AGL6BW2fH1WnYx"
     public val yelpApi :YelpFusionApi
     get() {
         var factory = YelpFusionApiFactory()
-        return factory.createAPI(clientId, clientSecret)
+        return factory.createAPI(apiKey)
     }
 
 

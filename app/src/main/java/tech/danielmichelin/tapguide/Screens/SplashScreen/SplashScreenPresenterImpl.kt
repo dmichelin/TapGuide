@@ -21,7 +21,7 @@ class SplashScreenPresenterImpl(val view: SplashScreenView) : SplashScreenPresen
     inner class TestConnectionTask : AsyncTask<MutableMap<String,String>,Int,SearchResponse>(){
         override fun doInBackground(vararg params: MutableMap<String, String>): SearchResponse {
             var factory = YelpFusionApiFactory()
-            val api = factory.createAPI(YelpApiHelper.clientId, YelpApiHelper.clientSecret)
+            val api = factory.createAPI(YelpApiHelper.apiKey)
             val response = api.getBusinessSearch(params[0]).execute().body()
             return response
         }

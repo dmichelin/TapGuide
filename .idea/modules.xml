@@ -3,8 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ExtendedTimelineView/ExtendedTimelineView.iml" filepath="$PROJECT_DIR$/ExtendedTimelineView/ExtendedTimelineView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExtendedTimelineView/ExtendedTimelineView.iml" filepath="$PROJECT_DIR$/ExtendedTimelineView/ExtendedTimelineView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TapGuide.iml" filepath="$PROJECT_DIR$/TapGuide.iml" />
       <module fileurl="file://$PROJECT_DIR$/TapGuide.iml" filepath="$PROJECT_DIR$/TapGuide.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yelp-fusion-client/yelp-fusion-client.iml" filepath="$PROJECT_DIR$/yelp-fusion-client/yelp-fusion-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/yelp-fusion-client/yelp-fusion-client.iml" filepath="$PROJECT_DIR$/yelp-fusion-client/yelp-fusion-client.iml" />
     </modules>
   </component>

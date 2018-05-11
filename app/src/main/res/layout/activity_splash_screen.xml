@@ -7,7 +7,7 @@
     android:background="@color/bootstrap_brand_primary">
 
     <ImageView
-        android:src="@drawable/splash_icon"
+        android:src="@color/ic_splash_background"
         android:id="@+id/testingConnectionTv"
         android:layout_width="0dp"
         android:layout_height="0dp"
